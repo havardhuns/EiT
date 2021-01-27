@@ -17,3 +17,15 @@ $ export FLASK_ENV=development
 $ flask run
 </code></pre>
 </ol>
+
+### Kjøre frontend
+<ol>
+<li> Installer npm
+<li>Gå inn i client-mappen</li>
+<pre><code>$ cd client</code></pre>
+<li>Installer dependencies (første gang, eller hvis noen nye er lagt til)</li>
+<pre><code>$ npm install</code></pre>
+<li>Kjør applikasjonen</li>
+<pre><code>$ npm start
+</code></pre>
+</ol>
