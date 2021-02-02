@@ -12,7 +12,7 @@
 <li>Installer dependencies</li>
 <pre><code>$ pip install -r requirements.txt</code></pre>
 <li>Kjør applikasjonen</li>
-<pre><code>$ export FLASK_APP=server.py
+<pre><code>$ export FLASK_APP=app.py
 $ export FLASK_ENV=development
 $ flask run
 </code></pre>
