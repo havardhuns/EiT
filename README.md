@@ -8,7 +8,12 @@
 <li>Lag et virtual environment</li>
 <pre><code>$ python3 -m venv myvenv</code></pre>
 <li>Aktiver virtual environment</li>
+<ul>
+<li> Mac: </li>
 <pre><code>$ . myvenv/bin/activate</code></pre>
+<li> Windows: </li>
+<pre><code>$ mypthon\Scripts\activate</code></pre>
+</ul>
 <li>Installer dependencies</li>
 <pre><code>$ pip install -r requirements.txt</code></pre>
 <li>Kjør applikasjonen</li>
