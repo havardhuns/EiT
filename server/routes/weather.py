@@ -1,6 +1,5 @@
 from flask import Blueprint
 import requests
-import pandas as pd
 from datetime import datetime, timedelta
 import json
 
