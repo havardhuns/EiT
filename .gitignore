@@ -4,3 +4,6 @@ myvenv/
 __pycache__
 
 node_modules/
+
+client/.eslintcache
+
