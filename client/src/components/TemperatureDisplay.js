@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux'
-import {getTemperature} from '../actions/temperatureActions'
+import {getTemperatureNow} from '../actions/temperatureActions'
 
 const TemperatureDisplay = props => {
 
@@ -8,7 +8,7 @@ const TemperatureDisplay = props => {
 
 
     useEffect(() => {
-        dispatch(getTemperature())
+        dispatch(getTemperatureNow())
     }, []) 
 
     const temperatureData = useSelector(state => state.temperatureReducer)

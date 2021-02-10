@@ -4,9 +4,9 @@ export const setTemperature = (temperature, time) => ({
     time: time
   });
 
-export function getTemperature() {
+export function getTemperatureNow() {
   return dispatch => {
-    fetch("http://localhost:5000/temperature")
+    fetch("http://localhost:5000/temperature/now")
       .then(response => response.json(), error => console.log(error))
       .then(temp => {
         dispatch(setTemperature(temp.temperature, temp.time));
