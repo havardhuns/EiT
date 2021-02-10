@@ -1,6 +1,7 @@
 import Maps from "./Maps"
 import { Redirect } from "react-router-dom"
 import React, { useEffect, useState } from "react"
+import TemperatureDisplay from "./TemperatureDisplay"
 
 
 const Home = () => {
@@ -30,6 +31,7 @@ const Home = () => {
                 <div>Veikvalitet for lastebiler</div>
                 <div onClick={() => setredirectAbout(true)}>About</div>
                 <div onClick={() => setredirectUsers(true)}>Users</div>
+                <TemperatureDisplay/>
             </div>
             <div style={style.map}><Maps/></div>
         </div>
