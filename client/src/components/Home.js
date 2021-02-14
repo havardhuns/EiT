@@ -1,5 +1,5 @@
 import Map from "./Map"
-import { Redirect } from "react-router-dom"
+import { useHistory } from "react-router-dom"
 import React, { useEffect, useState } from "react"
 import TemperatureDisplay from "./TemperatureDisplay"
 import { withScriptjs } from "react-google-maps";
@@ -7,26 +7,20 @@ import { withScriptjs } from "react-google-maps";
 
 
 const Home = () => {
+    let history = useHistory();
+    
+    const redirect = path => {
+        history.push(path);
+    }
 
     const MapLoader =  withScriptjs(Map);
-
-    const [redirectPath, setRedirectPath] = useState(null)
-
-
-    if (redirectPath) {
-        return (
-            <Redirect to={{
-                pathname: redirectPath,
-            }} />
-        )
-    }
     
     return(
         <div style={style.frontPage}>
             <div style={style.bar}>
                 <div>Veikvalitet for lastebiler</div>
-                <div onClick={() => setRedirectPath("/about")}>About</div>
-                <div onClick={() => setRedirectPath("/users")}>Users</div>
+                <div onClick={() => redirect("/about")}>About</div>
+                <div onClick={() => redirect("/users")}>Users</div>
                 <TemperatureDisplay/>
             </div>
             <div style={style.map}>
