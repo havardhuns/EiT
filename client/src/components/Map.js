@@ -13,7 +13,8 @@ const Map = () => {
             {
                 origin: origin,
                 destination: destination,
-                travelMode: google.maps.TravelMode.DRIVING
+                travelMode: google.maps.TravelMode.DRIVING,
+                provideRouteAlternatives: true
             },
             (result, status) => {
                 if (status === google.maps.DirectionsStatus.OK) {
@@ -29,13 +30,14 @@ const Map = () => {
         const origin = { lat: 63.419710, lng: 10.401690 };
         const destination = { lat: 58.562710764241615, lng: 7.77173255579074 };
         getDirections(origin, destination)
-    }) 
+    }, []) 
 
 
     const GoogleMapExample = withGoogleMap(props => (
       <GoogleMap
         defaultCenter={{ lat: 71, lng: 8 }}
         defaultZoom={3}
+        options={{ gestureHandling: "cooperative" }}
       >
         <DirectionsRenderer
           directions={directions}

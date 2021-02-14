@@ -10,7 +10,7 @@ const Home = () => {
 
     const MapLoader =  withScriptjs(Map);
 
-    const [redirectPath, setRedirect] = useState(null)
+    const [redirectPath, setRedirectPath] = useState(null)
 
 
     if (redirectPath) {
@@ -25,8 +25,8 @@ const Home = () => {
         <div style={style.frontPage}>
             <div style={style.bar}>
                 <div>Veikvalitet for lastebiler</div>
-                <div onClick={() => setRedirect("/about")}>About</div>
-                <div onClick={() => setRedirect("/users")}>Users</div>
+                <div onClick={() => setRedirectPath("/about")}>About</div>
+                <div onClick={() => setRedirectPath("/users")}>Users</div>
                 <TemperatureDisplay/>
             </div>
             <div style={style.map}>
