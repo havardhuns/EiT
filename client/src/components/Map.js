@@ -7,10 +7,8 @@ import { withGoogleMap, GoogleMap, DirectionsRenderer } from "react-google-maps"
 const Map = () => {
     const [directions, setDirections] = useState(null);
 
-    useEffect(() => {
+    const getDirections = (origin, destination) => {
         const directionsService = new google.maps.DirectionsService();
-        const origin = { lat: 63.419710, lng: 10.401690 };
-        const destination = { lat: 58.562710764241615, lng: 7.77173255579074 };
         directionsService.route(
             {
                 origin: origin,
@@ -21,10 +19,16 @@ const Map = () => {
                 if (status === google.maps.DirectionsStatus.OK) {
                     setDirections(result)
                 } else {
-                console.error(`error fetching directions ${result}`);
+                    console.log('Error fetching directions...')
                 }
             }
         );
+    }
+
+    useEffect(() => {
+        const origin = { lat: 63.419710, lng: 10.401690 };
+        const destination = { lat: 58.562710764241615, lng: 7.77173255579074 };
+        getDirections(origin, destination)
     }) 
 
 
@@ -38,6 +42,8 @@ const Map = () => {
         />
       </GoogleMap>
     ));
+
+    console.log(directions)
 
     return (
       <div>
