@@ -1,26 +1,22 @@
-import Maps from "./Maps"
+import Map from "./Map"
 import { Redirect } from "react-router-dom"
 import React, { useEffect, useState } from "react"
 import TemperatureDisplay from "./TemperatureDisplay"
+import { withScriptjs } from "react-google-maps";
+
 
 
 const Home = () => {
 
-    const [redirectToUsers, setredirectUsers] = useState(false)
-    const [redirectToAbout, setredirectAbout] = useState(false)
+    const MapLoader =  withScriptjs(Map);
 
-    if (redirectToUsers) {
+    const [redirectPath, setRedirect] = useState(null)
+
+
+    if (redirectPath) {
         return (
             <Redirect to={{
-                pathname: "/users",
-            }} />
-        )
-    }
-
-    if (redirectToAbout) {
-        return (
-            <Redirect to={{
-                pathname: "/about",
+                pathname: redirectPath,
             }} />
         )
     }
@@ -29,11 +25,16 @@ const Home = () => {
         <div style={style.frontPage}>
             <div style={style.bar}>
                 <div>Veikvalitet for lastebiler</div>
-                <div onClick={() => setredirectAbout(true)}>About</div>
-                <div onClick={() => setredirectUsers(true)}>Users</div>
+                <div onClick={() => setRedirect("/about")}>About</div>
+                <div onClick={() => setRedirect("/users")}>Users</div>
                 <TemperatureDisplay/>
             </div>
-            <div style={style.map}><Maps/></div>
+            <div style={style.map}>
+                <MapLoader
+                    googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyCVeQW1Rhy24_GLHqGsLf6KHoUTkGCwAOA"
+                    loadingElement={<div style={{ height: `100%` }} />}
+                />
+            </div>
         </div>
     )
 }
