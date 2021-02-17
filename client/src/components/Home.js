@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom"
 import React, { useEffect, useState } from "react"
 import TemperatureDisplay from "./TemperatureDisplay"
 import { withScriptjs } from "react-google-maps";
+import DestinationInputField from './DestinationInputField'
 
 
 
@@ -22,6 +23,7 @@ const Home = () => {
                 <div onClick={() => redirect("/about")}>About</div>
                 <div onClick={() => redirect("/users")}>Users</div>
                 <TemperatureDisplay/>
+                <DestinationInputField />
             </div>
             <div style={style.map}>
                 <MapLoader
