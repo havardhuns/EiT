@@ -1,23 +1,22 @@
-import { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux'
-import {getTemperatureNow} from '../actions/temperatureActions'
+import { useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { getTemperatureNow } from "../actions/temperatureActions";
 
-const TemperatureDisplay = props => {
+const TemperatureDisplay = (props) => {
+  const dispatch = useDispatch();
 
-    const dispatch = useDispatch();
+  useEffect(() => {
+    dispatch(getTemperatureNow());
+  }, []);
 
+  const temperatureData = useSelector((state) => state.temperatureReducer);
 
-    useEffect(() => {
-        dispatch(getTemperatureNow())
-    }, []) 
+  return (
+    <div>
+      Temperature {temperatureData.time} at Gløshaugen:{" "}
+      {temperatureData.temperature} °C
+    </div>
+  );
+};
 
-    const temperatureData = useSelector(state => state.temperatureReducer)
-
-    return(
-        <div>
-            Temperature {temperatureData.time} at Gløshaugen: {temperatureData.temperature} °C
-        </div>
-    )
-}
-
-export default TemperatureDisplay
+export default TemperatureDisplay;
