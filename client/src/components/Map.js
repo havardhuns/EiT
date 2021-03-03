@@ -8,13 +8,7 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 
 const GoogleMapExample = withGoogleMap((props) => (
-  <GoogleMap
-    defaultCenter={{ lat: 71, lng: 8 }}
-    defaultZoom={3}
-    options={{ gestureHandling: "cooperative" }}
-  >
     <DirectionsRenderer directions={props.directions} />
-  </GoogleMap>
 ));
 
 const Map = (props) => {

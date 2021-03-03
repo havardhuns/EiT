@@ -1,12 +1,10 @@
-import Map from "./Map";
 import { useHistory } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import TemperatureDisplay from "./TemperatureDisplay";
-import { withScriptjs } from "react-google-maps";
 import PlaceSearch from "./PlaceSearch";
 import Button from "@material-ui/core/Button";
-import { useSelector, useDispatch } from "react-redux";
 import { setOrigin, setDestination } from "../actions/placeActions";
+import { useSelector, useDispatch } from "react-redux";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -14,20 +12,17 @@ const Home = () => {
   const [selectedOrigin, setSelectedOrigin] = useState(null);
   const [selectedDestination, setSelectedDestination] = useState(null);
 
-  const origin = useSelector((state) => state.placeReducer.origin);
-  const destination = useSelector((state) => state.placeReducer.destination);
-
   let history = useHistory();
 
   const redirect = (path) => {
     history.push(path);
   };
 
-  const MapLoader = withScriptjs(Map);
 
   const setPlaces = () => {
     dispatch(setOrigin(selectedOrigin));
     dispatch(setDestination(selectedDestination));
+    redirect("/Directions")
   };
 
   return (
@@ -35,25 +30,13 @@ const Home = () => {
       <div style={style.bar}>
         <div>Veikvalitet for lastebiler</div>
         <div onClick={() => redirect("/about")}>About</div>
-        <div onClick={() => redirect("/users")}>Users</div>
-        <TemperatureDisplay />
         fra:
         <PlaceSearch onSelect={setSelectedOrigin} />
         til:
         <PlaceSearch onSelect={setSelectedDestination} />
-        {selectedOrigin && selectedDestination && (
-          <Button onClick={setPlaces} variant="contained">
+          <Button onClick={setPlaces} variant="contained" disabled={!(selectedOrigin && selectedDestination)}>
             Få Veibeskrivelse
           </Button>
-        )}
-      </div>
-      <div style={style.map}>
-        <MapLoader
-          googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyCVeQW1Rhy24_GLHqGsLf6KHoUTkGCwAOA"
-          loadingElement={<div style={{ height: `100%` }} />}
-          origin={origin}
-          destination={destination}
-        />
       </div>
     </div>
   );

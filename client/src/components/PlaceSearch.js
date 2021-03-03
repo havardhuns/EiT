@@ -15,7 +15,7 @@ const PlaceSearch = (props) => {
     geocodeByAddress(selected)
       .then((res) => getLatLng(res[0]))
       .then(({ lat, lng }) => {
-        props.onSelect({ lat: lat, lng: lng });
+        props.onSelect({ lat: lat, lng: lng, name: selected });
       })
       .catch((error) => {
         console.log("error", error);
