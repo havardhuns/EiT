@@ -1,5 +1,6 @@
 from flask import Flask
 from routes.weather import weatherBlueprint
+from routes.persistance import persistanceBlueprint
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -12,3 +13,4 @@ def sanity_test():
     return 'pong'
 
 app.register_blueprint(weatherBlueprint)
+app.register_blueprint(persistanceBlueprint)
