@@ -25,19 +25,17 @@ def temperature_now():
     else:
         return str(req.status_code) + "reason from met api: " + req.reason
 
-@weatherBlueprint.route('/weather/coordinates', methods = ['GET'])
-def weather():
-    time = request.args.get('time')
-    lat = request.args.get('lat')
-    lon = request.args.get('lat')
-    if time:
-        time = datetime.strptime(time, '%Y-%m-%d %H:%M:%S')
-    else:
+@weatherBlueprint.route('/weather/coordinates/lat/<lat>/lng/<lng>/time/<time>', methods = ['GET'])
+def weather(lat, lng, time):
+    print(time)
+    if time =="now":
         time = datetime.now()
-    if not lat or not lon:
-        return "Missing latitude and/or longitude", 400
+    else:
+        time = datetime.strptime(time, '%Y-%m-%d %H:%M:%S')
+    '''if not lat or not lng:
+        return "Missing latitude and/or longitude", 400'''
 
-    req = requests.get('https://api.met.no/weatherapi/locationforecast/2.0/compact?lat={}&lon={}'.format(lat, lon), headers=headers)
+    req = requests.get('https://api.met.no/weatherapi/locationforecast/2.0/compact?lat={}&lon={}'.format(lat, lng), headers=headers)
     if req.status_code == 200:
         weather_data = req.json()['properties']['timeseries']
         nextHour = getNextHour(datetime.now())
