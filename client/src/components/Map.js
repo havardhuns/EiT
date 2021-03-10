@@ -26,7 +26,7 @@ const Map = (props) => {
   return (
     <div>
       <GoogleMapExample
-        containerElement={<div style={{ height: `500px`, width: "100vh" }} />}
+        containerElement={<div style={{ height: `99vh`, width: "99vh" }} />}
         mapElement={<div style={{ height: `100%` }} />}
         singleMarker={props.singleMarker}
         directions={props.directions ? props.directions : null}

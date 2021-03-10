@@ -5,6 +5,8 @@ import {GiTruck} from "react-icons/gi"
 import Directions from "./Directions"
 import RoadInformation from "./RoadInformation"
 import { useSelector, useDispatch } from "react-redux";
+import Typography from '@material-ui/core/Typography';
+
 
 
 
@@ -19,19 +21,22 @@ const Home = () => {
   const redirect = (path) => {
     history.push(path);
   };
+  
 
   return (
     <div style={style.frontPage}>
       <div style={style.bar}>
-        <div>Veikvalitet for lastebiler <GiTruck/></div>
+        <h2>Veikvalitet for lastebiler <GiTruck/></h2>
         <DirectionsSelector redirect={redirect}/>
         {origin && destination && <RoadInformation/>}
-        <div onClick={() => redirect("/about")}>About</div>
+        <h4 onClick={() => redirect("/about")} style={{position: "absolute", bottom: "5px", left: "20px"}}>About</h4>
       </div>
-      <div><Directions/></div>
+      <div style={style.map}><Directions/></div>
     </div>
   );
 };
+
+
 
 const style = {
   frontPage: {
@@ -43,11 +48,13 @@ const style = {
     width: "50%",
     display: "flex",
     flexDirection: "column",
-    justifyContent: "space-around",
+    alignItems: "center"
   },
   map: {
-    height: "100%",
-    width: "50%",
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: "50%"
   },
 };
 

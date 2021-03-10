@@ -6,6 +6,7 @@ import { withScriptjs } from "react-google-maps";
 import { Redirect } from "react-router-dom"
 import TemperatureDisplay from "./TemperatureDisplay"
 import {getWeatherFromCoordinates} from "../actions/weatherAction"
+import {setDirections} from "../actions/directionsAcions"
 
 
 
@@ -13,9 +14,9 @@ const Directions = () => {
   const origin = useSelector((state) => state.placeReducer.origin);
   const destination = useSelector((state) => state.placeReducer.destination);
   const singleMarker = useSelector((state) => state.placeReducer.singleMarker);
+  const directions = useSelector((state) => state.directionsReducer.directions);
 
-  const [directions, setDirections] = useState(null);
-
+  const dispatch = useDispatch();
 
   const getDirections = (origin, destination) => {
     const directionsService = new google.maps.DirectionsService();
@@ -29,7 +30,7 @@ const Directions = () => {
       (result, status) => {
         if (status === google.maps.DirectionsStatus.OK) {
           console.log(result)
-          setDirections(result)
+          dispatch(setDirections(result))
         } else {
           console.log("Error fetching directions...");
         }
@@ -43,7 +44,7 @@ const Directions = () => {
       getDirections(origin, destination)
     } 
     else {
-      setDirections(null)
+      dispatch(setDirections(null))
     }
   }, [origin, destination]);
 
