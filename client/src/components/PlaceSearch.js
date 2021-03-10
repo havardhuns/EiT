@@ -7,8 +7,6 @@ import { classnames } from "../helpers";
 
 const PlaceSearch = (props) => {
   const [address, setAddress] = useState("");
-  const [latitude, setLatitude] = useState(null);
-  const [longitude, setLongitude] = useState(null);
 
   const handleSelect = (selected) => {
     setAddress(selected);
@@ -24,15 +22,18 @@ const PlaceSearch = (props) => {
 
   const handleCloseClick = () => {
     setAddress("");
-    setLatitude(null);
-    setLongitude(null);
+    props.onSelect(null);
   };
+
+
+
+
 
   return (
     <div>
       <PlacesAutocomplete
         onChange={setAddress}
-        value={address}
+        value={props.value ? props.value.name : address}
         onSelect={handleSelect}
         onError={(error) => console.log(error)}
         shouldFetchSuggestions={address.length > 2}
@@ -43,7 +44,7 @@ const PlaceSearch = (props) => {
               <div className="search-input-container">
                 <input
                   {...getInputProps({
-                    placeholder: "Search Places...",
+                    placeholder: props.placeholder,
                     className: "search-input",
                   })}
                 />

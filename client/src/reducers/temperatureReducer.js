@@ -4,7 +4,6 @@ const initialState = {
 };
 
 export default function temperatureReducer(state = initialState, action) {
-  console.log(action);
   switch (action.type) {
     case "SET_TEMPERATURE":
       return {

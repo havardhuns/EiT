@@ -1,6 +1,7 @@
 const initialState = {
   origin: null,
   destination: null,
+  singleMarker: null
 };
 
 export default function placeReducer(state = initialState, action) {
@@ -14,6 +15,11 @@ export default function placeReducer(state = initialState, action) {
       return {
         ...state,
         destination: action.payload,
+      };
+    case "SET_SINGLE_MARKER":
+      return {
+        ...state,
+        singleMarker: action.payload,
       };
     default:
       return state;

@@ -2,13 +2,10 @@ from flask import Blueprint, request
 import requests
 from datetime import datetime, timedelta
 import json
+from functions.weatherFunctions import getNextHour
 
 weatherBlueprint = Blueprint('weather', __name__)
 headers = {"User-Agent": "weather EiT app"}
-
-
-def getNextHour(datetimeObject):
-    return (datetimeObject.replace(microsecond=0, second=0, minute=0) + timedelta(hours=1)).isoformat() + "Z"
 
 
 @weatherBlueprint.route('/temperature/now', methods = ['GET'])

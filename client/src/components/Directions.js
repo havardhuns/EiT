@@ -1,52 +1,63 @@
 import Map from "./Map";
+import MapDirections from "./MapDirections"
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { withScriptjs } from "react-google-maps";
 import { Redirect } from "react-router-dom"
 import TemperatureDisplay from "./TemperatureDisplay"
 import {getWeatherFromCoordinates} from "../actions/weatherAction"
+import {setDirections} from "../actions/directionsAcions"
 
 
 
 const Directions = () => {
   const origin = useSelector((state) => state.placeReducer.origin);
   const destination = useSelector((state) => state.placeReducer.destination);
-
-  if (!origin || !destination) {
-    return (
-      <Redirect to={{
-          pathname: "/",
-      }} />
-    )
-  }
-
-  const weather = useSelector((state) => state.weatherReducer);
+  const singleMarker = useSelector((state) => state.placeReducer.singleMarker);
+  const directions = useSelector((state) => state.directionsReducer.directions);
 
   const dispatch = useDispatch();
 
+  const getDirections = (origin, destination) => {
+    const directionsService = new google.maps.DirectionsService();
+    directionsService.route(
+      {
+        origin: origin,
+        destination: destination,
+        travelMode: google.maps.TravelMode.DRIVING,
+        provideRouteAlternatives: true,
+      },
+      (result, status) => {
+        if (status === google.maps.DirectionsStatus.OK) {
+          console.log(result)
+          dispatch(setDirections(result))
+        } else {
+          console.log("Error fetching directions...");
+        }
+      }
+    );
+  };
+
 
   useEffect(() => {
-    dispatch(getWeatherFromCoordinates(origin.lat, origin.lng, origin.name));
-    dispatch(getWeatherFromCoordinates(destination.lat, destination.lng, destination.name));
-  }, []);
-
-
-
-
-  
+    if (origin && destination) {
+      getDirections(origin, destination)
+    } 
+    else {
+      dispatch(setDirections(null))
+    }
+  }, [origin, destination]);
 
 
   const MapLoader = withScriptjs(Map);
-  return (<div>
+  return (
     <MapLoader
       googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyCVeQW1Rhy24_GLHqGsLf6KHoUTkGCwAOA"
       loadingElement={<div style={{ height: `100%` }} />}
-      origin={origin}
-      destination={destination}
-    />
-    {weather[origin.name] && <TemperatureDisplay place={origin.name} time={weather[origin.name].time} temperature={weather[origin.name].data.instant.details.air_temperature} />}
-    {weather[destination.name] && <TemperatureDisplay place={destination.name} time={weather[destination.name].time} temperature={weather[destination.name].data.instant.details.air_temperature} />}
-  </div>)
+      singleMarker={singleMarker}
+      showMarker={!directions || (singleMarker != origin && singleMarker != destination)}
+      directions={directions}
+    />)
 };
 
 export default Directions;

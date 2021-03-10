@@ -1,46 +1,42 @@
 import { useHistory } from "react-router-dom";
-import React, { useEffect, useState } from "react";
-import TemperatureDisplay from "./TemperatureDisplay";
-import PlaceSearch from "./PlaceSearch";
-import Button from "@material-ui/core/Button";
-import { setOrigin, setDestination } from "../actions/placeActions";
+import DirectionsSelector from "./DirectionsSelector";
+import { Redirect } from 'react-router'
+import {GiTruck} from "react-icons/gi"
+import Directions from "./Directions"
+import RoadInformation from "./RoadInformation"
 import { useSelector, useDispatch } from "react-redux";
+import Typography from '@material-ui/core/Typography';
+
+
+
+
 
 const Home = () => {
-  const dispatch = useDispatch();
-
-  const [selectedOrigin, setSelectedOrigin] = useState(null);
-  const [selectedDestination, setSelectedDestination] = useState(null);
 
   let history = useHistory();
+
+  const origin = useSelector((state) => state.placeReducer.origin);
+  const destination = useSelector((state) => state.placeReducer.destination);
 
   const redirect = (path) => {
     history.push(path);
   };
-
-
-  const setPlaces = () => {
-    dispatch(setOrigin(selectedOrigin));
-    dispatch(setDestination(selectedDestination));
-    redirect("/Directions")
-  };
+  
 
   return (
     <div style={style.frontPage}>
       <div style={style.bar}>
-        <div>Veikvalitet for lastebiler</div>
-        <div onClick={() => redirect("/about")}>About</div>
-        fra:
-        <PlaceSearch onSelect={setSelectedOrigin} />
-        til:
-        <PlaceSearch onSelect={setSelectedDestination} />
-          <Button onClick={setPlaces} variant="contained" disabled={!(selectedOrigin && selectedDestination)}>
-            Få Veibeskrivelse
-          </Button>
+        <h2>Veikvalitet for lastebiler <GiTruck/></h2>
+        <DirectionsSelector redirect={redirect}/>
+        {origin && destination && <RoadInformation/>}
+        <h4 onClick={() => redirect("/about")} style={{position: "absolute", bottom: "5px", left: "20px"}}>About</h4>
       </div>
+      <div style={style.map}><Directions/></div>
     </div>
   );
 };
+
+
 
 const style = {
   frontPage: {
@@ -52,11 +48,13 @@ const style = {
     width: "50%",
     display: "flex",
     flexDirection: "column",
-    justifyContent: "space-around",
+    alignItems: "center"
   },
   map: {
-    height: "100%",
-    width: "50%",
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: "50%"
   },
 };
 
