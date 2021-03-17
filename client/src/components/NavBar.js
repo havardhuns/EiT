@@ -1,50 +1,69 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 
-const NavBarItem = (props) => {
-    const [hover, setHover] = useState(false)
+const NavBar = (props) => {
+  const navBarItems = ["About", "Contact"];
 
-    return <div>
-        <div style={{...style.element, ...hover && {backgroundColor: '#404040'}}} onMouseEnter={() => setHover(true)} onMouseLeave={() => setHover(false)}>    
-            {props.item}
-        </div>
-    </div>
-}
+  let history = useHistory();
 
-
-const About = () => {
-
-    const navBarItems = ["About", "Contact"]
-
-    
-
-
-    return <div style={style.navBar}>
-            <div style={{...style.element, ...style.titleElement}}> RoadBuddy </div>
-            {navBarItems.map(item => (
-                <NavBarItem item={item}/>
-            ))}
-            </div>;
+  const redirect = (path) => {
+    history.push(path);
   };
 
-  const style = {
-    titleElement: {
-        backgroundColor: '#313131',
-        borderBottom: '1px solid grey',
-    },
-    navBar: {
-        display: "flex",
-        flexDirection: "Column",
-    },
-    element: {
-        lineHeight: '75px',
-        paddingLeft: '10%',
-        width: '90%',
-        height: '75px',
-        color: 'white',
-        fontSize: '40px',
-        cursor: 'pointer'
-    }
-  }
-  
-  export default About;
-  
+  return (
+    <div style={style.navBar}>
+      <div
+        style={{ ...style.element, ...style.titleElement }}
+        onClick={() => redirect("/")}
+      >
+        {" "}
+        RoadBuddy{" "}
+      </div>
+      {navBarItems.map((item) => (
+        <NavBarItem item={item} redirect={redirect} />
+      ))}
+    </div>
+  );
+};
+
+const NavBarItem = (props) => {
+  const [hover, setHover] = useState(false);
+
+  return (
+    <div>
+      <div
+        style={{
+          ...style.element,
+          ...(hover && { backgroundColor: "#404040" }),
+        }}
+        onMouseEnter={() => setHover(true)}
+        onMouseLeave={() => setHover(false)}
+        onClick={() => props.redirect("/" + props.item)}
+      >
+        {props.item}
+      </div>
+    </div>
+  );
+};
+
+const style = {
+  titleElement: {
+    backgroundColor: "#313131",
+    borderBottom: "1px solid grey",
+  },
+  navBar: {
+    display: "flex",
+    flexDirection: "Column",
+  },
+  element: {
+    lineHeight: "75px",
+    paddingLeft: "10%",
+    width: "90%",
+    height: "75px",
+    color: "white",
+    fontSize: "30px",
+    cursor: "pointer",
+  },
+};
+
+export default NavBar;

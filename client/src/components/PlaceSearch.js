@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import PlacesAutocomplete, {
   geocodeByAddress,
   getLatLng,
@@ -24,10 +24,6 @@ const PlaceSearch = (props) => {
     setAddress("");
     props.onSelect(null);
   };
-
-
-
-
 
   return (
     <div>
