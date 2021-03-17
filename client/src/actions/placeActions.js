@@ -8,7 +8,6 @@ export const setDestination = (destination) => ({
   payload: destination,
 });
 
-
 export const setSingleMarker = (coordinates) => ({
   type: "SET_SINGLE_MARKER",
   payload: coordinates,
