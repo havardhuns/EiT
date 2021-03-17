@@ -20,7 +20,8 @@
 <pre><code>$ export FLASK_APP=app.py
 $ export FLASK_ENV=development
 $ flask run
-</code></pre>
+</code>Windows: <code> SET </code> instead of <code> export </code>
+</pre>
 </ol>
 
 ### Kjøre frontend

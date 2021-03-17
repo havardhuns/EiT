@@ -2,5 +2,8 @@
 venv/
 myvenv/
 __pycache__
-
+demo/
 node_modules/
+
+client/.eslintcache
+
