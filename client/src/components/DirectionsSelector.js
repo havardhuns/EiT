@@ -61,7 +61,8 @@ const DirectionsSelector = (props) => {
         border: "1px solid rgba(0,0,0,0.2)",
         borderRadius: "10px",
         margin: "10px",
-        boxShadow: "2px 2px 10px #999999"
+        boxShadow: "2px 2px 10px #999999",
+        backgroundColor: "white"
     },
     icons: {
         display: "flex",

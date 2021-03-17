@@ -6,6 +6,7 @@ import Directions from "./Directions"
 import RoadInformation from "./RoadInformation"
 import { useSelector, useDispatch } from "react-redux";
 import Typography from '@material-ui/core/Typography';
+import NavBar from "./NavBar"
 
 
 
@@ -22,40 +23,59 @@ const Home = () => {
     history.push(path);
   };
   
+  const directionsSelected =  origin && destination
 
   return (
     <div style={style.frontPage}>
-      <div style={style.bar}>
-        <h2>Veikvalitet for lastebiler <GiTruck/></h2>
-        <DirectionsSelector redirect={redirect}/>
-        {origin && destination && <RoadInformation/>}
-        <h4 onClick={() => redirect("/about")} style={{position: "absolute", bottom: "5px", left: "20px"}}>About</h4>
-      </div>
-      <div style={style.map}><Directions/></div>
+        <div style={style.bar}><NavBar/></div>
+        <div style={style.content}> 
+          <div style={directionsSelected ? style.mapSmall: style.map}>
+            <Directions/>
+            <div style={style.directionsSelector}><DirectionsSelector redirect={redirect}/></div>
+            </div>
+          
+          {directionsSelected && <RoadInformation/>}
+        </div>
     </div>
   );
 };
+
+//        
+//         <h4 onClick={() => redirect("/about")} style={{position: "absolute", bottom: "5px", left: "20px"}}>About</h4>
+
+
 
 
 
 const style = {
   frontPage: {
+    position: "absolute",
+    width: "100%",
     display: "flex",
-    height: "100vh",
   },
   bar: {
-    height: "50%",
-    width: "50%",
-    display: "flex",
-    flexDirection: "column",
-    alignItems: "center"
+    width: "25%",
+    backgroundColor: "#484848"
+  },
+  content: {
+    width: "75%",
   },
   map: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: "50%"
+    width: "100%",
+    height: "100%",
+    transition: 'height 2s'
   },
+  mapSmall: {
+    width: "100%",
+    height: "50%",
+    transition: 'height 1s'
+
+  },
+  directionsSelector: {
+    position: "absolute",
+    top: 0,
+    left: "25%",
+  }
 };
 
 export default Home;
