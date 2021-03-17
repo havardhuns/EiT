@@ -26,8 +26,6 @@ const About = () => {
             </div>;
   };
 
-{/*, ...hover&&{backgroundColor: 'white'}}} onMouseEnter={setHover(true)} onMouseLeave={setHover(false)}*/}
-
   const style = {
     titleElement: {
         backgroundColor: '#313131',
