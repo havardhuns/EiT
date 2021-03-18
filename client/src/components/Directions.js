@@ -9,6 +9,9 @@ const Directions = () => {
   const destination = useSelector((state) => state.placeReducer.destination);
   const singleMarker = useSelector((state) => state.placeReducer.singleMarker);
   const directions = useSelector((state) => state.directionsReducer.directions);
+  const selectedRouteIndex = useSelector(
+    (state) => state.directionsReducer.selectedRouteIndex
+  );
 
   const dispatch = useDispatch();
 
@@ -24,6 +27,7 @@ const Directions = () => {
       (result, status) => {
         if (status === window.google.maps.DirectionsStatus.OK) {
           setTimeout(() => {
+            console.log(result);
             dispatch(setDirections(result));
           }, 500);
         } else {
@@ -51,6 +55,7 @@ const Directions = () => {
         !directions || (singleMarker !== origin && singleMarker !== destination)
       }
       directions={directions}
+      routeIndex={selectedRouteIndex}
     />
   );
 };

@@ -17,7 +17,10 @@ const GoogleMapExample = withGoogleMap((props) => (
       streetViewControl: false,
     }}
   >
-    <DirectionsRenderer directions={props.directions} />
+    <DirectionsRenderer
+      directions={props.directions}
+      routeIndex={props.routeIndex}
+    />
     <Marker position={props.singleMarker} visible={props.showMarker} />
   </GoogleMap>
 ));
@@ -30,6 +33,7 @@ const Map = (props) => {
       singleMarker={props.singleMarker}
       directions={props.directions ? props.directions : null}
       showmArker={props.showmArker}
+      routeIndex={props.routeIndex}
     />
   );
 };

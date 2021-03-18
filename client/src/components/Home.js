@@ -34,6 +34,7 @@ const style = {
   map: {
     width: "100%",
     height: "100%",
+    transition: "height 1s",
   },
   mapSmall: {
     width: "100%",
