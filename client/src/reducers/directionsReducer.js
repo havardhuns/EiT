@@ -1,5 +1,6 @@
 const initialState = {
   directions: null,
+  selectedRouteIndex: 0,
 };
 
 export default function directionsReducer(state = initialState, action) {
@@ -8,6 +9,12 @@ export default function directionsReducer(state = initialState, action) {
       return {
         ...state,
         directions: action.payload,
+        selectedRouteIndex: 0,
+      };
+    case "SET_ROUTE_INDEX":
+      return {
+        ...state,
+        selectedRouteIndex: action.payload,
       };
     default:
       return state;
