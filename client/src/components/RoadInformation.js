@@ -14,6 +14,8 @@ import Button from "@material-ui/core/Button";
 import DriveEtaIcon from "@material-ui/icons/DriveEta";
 import { setSelectedRouteIndex } from "../actions/directionsAcions";
 import ListSubheader from "@material-ui/core/ListSubheader";
+import GifLoader from "react-gif-loader";
+import load from "../images/loading/delivery-truck.gif";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -43,6 +45,7 @@ const RoadInformation = () => {
   const destination = useSelector((state) => state.placeReducer.destination);
 
   const [showAlternativeRoutes, setShowAlternativeRoutes] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     dispatch(getWeatherFromCoordinates(origin.lat, origin.lng, origin.name));
@@ -53,6 +56,9 @@ const RoadInformation = () => {
         destination.name
       )
     );
+    setTimeout(() => {
+      setLoading(false);
+    }, 5000);
   }, []);
 
   const selectRoute = (index) => {
@@ -63,102 +69,139 @@ const RoadInformation = () => {
   const names = [origin.name, destination.name];
 
   return (
-    <div>
-      {!showAlternativeRoutes ? (
-        <List
-          className={classes.root}
-          subheader={
-            <ListSubheader component="div" id="nested-list-subheader">
-              Informasjon om kjøreforhold for ruten
-            </ListSubheader>
-          }
+    <div style={{ height: "50%" }}>
+      {!directions ? (
+        <div
+          style={{
+            height: "100%",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+          }}
         >
-          {weather[origin.name] &&
-            weather[destination.name] &&
-            names.map((name) => (
-              <div>
-                <ListItem button alignItems="flex-start">
-                  <ListItemAvatar>
-                    <Avatar
-                      src={
-                        "https://folk.ntnu.no/haavarhu/weathericon/svg/" +
-                        weather[name].data.next_1_hours.summary.symbol_code +
-                        ".svg"
-                      }
-                    />
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary={name}
-                    secondary={
-                      <React.Fragment>
-                        <Typography
-                          component="span"
-                          variant="body2"
-                          className={classes.inline}
-                          color="textPrimary"
-                        >
-                          Temperatur
-                        </Typography>
-                        {"      " +
-                          weather[name].data.instant.details.air_temperature +
-                          "°C"}
-                      </React.Fragment>
-                    }
-                  />
-                </ListItem>
-                <Divider variant="inset" component="li" />
-              </div>
-            ))}
-        </List>
+          <img src={load} alt="loading..." style={{ width: "20%" }} />
+          <Typography
+            component="span"
+            variant="body1"
+            className={classes.inline}
+            color="textPrimary"
+          >
+            Henter kjøreforhold...
+          </Typography>
+        </div>
       ) : (
         <div>
-          <List
-            className={classes.root}
-            subheader={
-              <ListSubheader component="div" id="nested-list-subheader">
-                Velg en rute
-              </ListSubheader>
-            }
+          {!showAlternativeRoutes ? (
+            <List
+              className={classes.root}
+              subheader={
+                <ListSubheader component="div" id="nested-list-subheader">
+                  Informasjon om kjøreforhold for ruten
+                </ListSubheader>
+              }
+            >
+              {weather[origin.name] &&
+                weather[destination.name] &&
+                names.map((name) => (
+                  <div>
+                    <ListItem button alignItems="flex-start">
+                      <ListItemAvatar>
+                        <Avatar
+                          src={
+                            "https://folk.ntnu.no/haavarhu/weathericon/svg/" +
+                            weather[name].data.next_1_hours.summary
+                              .symbol_code +
+                            ".svg"
+                          }
+                        />
+                      </ListItemAvatar>
+                      <ListItemText
+                        primary={name}
+                        secondary={
+                          <React.Fragment>
+                            <Typography
+                              component="span"
+                              variant="body2"
+                              className={classes.inline}
+                              color="textPrimary"
+                            >
+                              Temperatur
+                            </Typography>
+                            {"      " +
+                              weather[name].data.instant.details
+                                .air_temperature +
+                              "°C"}
+                          </React.Fragment>
+                        }
+                      />
+                    </ListItem>
+                    <Divider variant="inset" component="li" />
+                  </div>
+                ))}
+            </List>
+          ) : (
+            <div>
+              <List
+                className={classes.root}
+                subheader={
+                  <ListSubheader component="div" id="nested-list-subheader">
+                    Velg en rute
+                  </ListSubheader>
+                }
+              >
+                {directions.routes.map((route, index) => (
+                  <div>
+                    <ListItem
+                      button
+                      alignItems="flex-start"
+                      onClick={() => selectRoute(index)}
+                    >
+                      <ListItemAvatar style={{ margin: "auto" }}>
+                        <DriveEtaIcon
+                          style={{ color: "#606060" }}
+                          size="large"
+                        />
+                      </ListItemAvatar>
+                      <ListItemText
+                        primary={"via " + route.summary}
+                        secondary={
+                          <React.Fragment>
+                            <Typography
+                              component="span"
+                              variant="body2"
+                              className={classes.inline}
+                              color="textPrimary"
+                            >
+                              {route.legs[0].duration.text}
+                            </Typography>
+                            {"      " + route.legs[0].distance.text}
+                          </React.Fragment>
+                        }
+                      />
+                    </ListItem>
+                    <Divider variant="inset" component="li" />
+                  </div>
+                ))}
+              </List>
+            </div>
+          )}
+          <Button
+            variant="contained"
+            onClick={() => setShowAlternativeRoutes(!showAlternativeRoutes)}
+            style={{
+              position: "absolute",
+              top: "calc(50% + 5px)",
+              right: "5px",
+              zIndex: 1,
+            }}
           >
-            {directions.routes.map((route, index) => (
-              <div>
-                <ListItem
-                  button
-                  alignItems="flex-start"
-                  onClick={() => selectRoute(index)}
-                >
-                  <ListItemAvatar style={{ margin: "auto" }}>
-                    <DriveEtaIcon style={{ color: "#606060" }} size="large" />
-                  </ListItemAvatar>
-                  <ListItemText
-                    primary={"via " + route.summary}
-                    secondary={
-                      <React.Fragment>
-                        <Typography
-                          component="span"
-                          variant="body2"
-                          className={classes.inline}
-                          color="textPrimary"
-                        >
-                          {route.legs[0].duration.text}
-                        </Typography>
-                        {"      " + route.legs[0].distance.text}
-                      </React.Fragment>
-                    }
-                  />
-                </ListItem>
-                <Divider variant="inset" component="li" />
-              </div>
-            ))}
-          </List>
+            {showAlternativeRoutes
+              ? "Tilbake til kjøreforhold"
+              : "Velg en annen rute"}
+          </Button>
         </div>
       )}
-      <Button
-        variant="contained"
-        onClick={() => setShowAlternativeRoutes(!showAlternativeRoutes)}
-      >
-        {showAlternativeRoutes ? "Tilbake" : "Velg en annen rute"}
-      </Button>
     </div>
   );
 };
