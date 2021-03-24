@@ -12,7 +12,10 @@ import { makeStyles } from "@material-ui/core/styles";
 import { setSingleMarker } from "../actions/placeActions";
 import Button from "@material-ui/core/Button";
 import DriveEtaIcon from "@material-ui/icons/DriveEta";
-import { setSelectedRouteIndex } from "../actions/directionsAcions";
+import {
+  setSelectedRouteIndex,
+  getRoutePath,
+} from "../actions/directionsAcions";
 import ListSubheader from "@material-ui/core/ListSubheader";
 import GifLoader from "react-gif-loader";
 import load from "../images/loading/delivery-truck.gif";
@@ -56,11 +59,21 @@ const RoadInformation = () => {
         destination.name
       )
     );
+    if (routePath) {
+      dispatch(
+        getWeatherFromCoordinates(
+          routePath[Math.floor(routePath.length / 2)].lat,
+          routePath[Math.floor(routePath.length / 2)].lng,
+          "random plass"
+        )
+      );
+    }
   }, []);
 
   const selectRoute = (index) => {
     dispatch(setSelectedRouteIndex(index));
     setShowAlternativeRoutes(false);
+    getRoutePath(directions, index);
   };
 
   const names = [origin.name, destination.name];
@@ -101,7 +114,7 @@ const RoadInformation = () => {
               {weather[origin.name] &&
                 weather[destination.name] &&
                 names.map((name) => (
-                  <div>
+                  <div key={name}>
                     <ListItem button alignItems="flex-start">
                       <ListItemAvatar>
                         <Avatar
@@ -148,7 +161,7 @@ const RoadInformation = () => {
                 }
               >
                 {directions.routes.map((route, index) => (
-                  <div>
+                  <div key={index}>
                     <ListItem
                       button
                       alignItems="flex-start"

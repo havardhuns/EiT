@@ -20,7 +20,7 @@ const NavBar = (props) => {
         RoadBuddy{" "}
       </div>
       {navBarItems.map((item) => (
-        <NavBarItem item={item} redirect={redirect} />
+        <NavBarItem item={item} redirect={redirect} key={item} />
       ))}
     </div>
   );

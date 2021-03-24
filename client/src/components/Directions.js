@@ -2,7 +2,7 @@ import Map from "./Map";
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { withScriptjs } from "react-google-maps";
-import { setDirections, setRoutePath } from "../actions/directionsAcions";
+import { setDirections, getRoutePath } from "../actions/directionsAcions";
 
 const Directions = () => {
   const origin = useSelector((state) => state.placeReducer.origin);
@@ -26,14 +26,7 @@ const Directions = () => {
       },
       (result, status) => {
         if (status === window.google.maps.DirectionsStatus.OK) {
-          var path = window.google.maps.geometry.encoding.decodePath(
-            result.routes[0].overview_polyline
-          );
-          const routePath = path.map((point) => {
-            return { lat: point.lat(), lng: point.lng() };
-          });
-          dispatch(setRoutePath(routePath));
-
+          dispatch(getRoutePath(result, selectedRouteIndex));
           setTimeout(() => {
             console.log(result);
             dispatch(setDirections(result));
