@@ -7,3 +7,6 @@ node_modules/
 
 client/.eslintcache
 
+.DS_STORE
+client/src/.DS_Store
+client/src/images/loading/.DS_Store
