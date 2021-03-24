@@ -45,7 +45,6 @@ const RoadInformation = () => {
   const destination = useSelector((state) => state.placeReducer.destination);
 
   const [showAlternativeRoutes, setShowAlternativeRoutes] = useState(false);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     dispatch(getWeatherFromCoordinates(origin.lat, origin.lng, origin.name));
@@ -56,9 +55,6 @@ const RoadInformation = () => {
         destination.name
       )
     );
-    setTimeout(() => {
-      setLoading(false);
-    }, 5000);
   }, []);
 
   const selectRoute = (index) => {
@@ -146,7 +142,7 @@ const RoadInformation = () => {
                 className={classes.root}
                 subheader={
                   <ListSubheader component="div" id="nested-list-subheader">
-                    Velg en rute
+                    Velg en annen rute
                   </ListSubheader>
                 }
               >
@@ -198,7 +194,7 @@ const RoadInformation = () => {
           >
             {showAlternativeRoutes
               ? "Tilbake til kjøreforhold"
-              : "Velg en annen rute"}
+              : "Alternative ruter"}
           </Button>
         </div>
       )}
