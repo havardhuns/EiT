@@ -35,8 +35,9 @@ const RoadInformation = () => {
   const index = useSelector(
     (state) => state.directionsReducer.selectedRouteIndex
   );
+  const routePath = useSelector((state) => state.directionsReducer.routePath);
 
-  console.log(index);
+  console.log(routePath);
 
   const dispatch = useDispatch();
 
