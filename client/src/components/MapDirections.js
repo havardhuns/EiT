@@ -1,14 +1,8 @@
 /*global google*/
-import React, { useEffect, useState } from "react";
-import {
-  withGoogleMap,
-  GoogleMap,
-  DirectionsRenderer,
-} from "react-google-maps";
-import { useSelector, useDispatch } from "react-redux";
+import { withGoogleMap, DirectionsRenderer } from "react-google-maps";
 
 const GoogleMapExample = withGoogleMap((props) => (
-    <DirectionsRenderer directions={props.directions} />
+  <DirectionsRenderer directions={props.directions} />
 ));
 
 const MapDirections = (props) => {

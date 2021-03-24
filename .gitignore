@@ -2,8 +2,12 @@
 venv/
 myvenv/
 __pycache__
-
+demo/
 node_modules/
 
 client/.eslintcache
+client/.eslintrc
 
+.DS_STORE
+client/src/.DS_Store
+client/src/images/loading/.DS_Store

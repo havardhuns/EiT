@@ -1,7 +1,7 @@
 const initialState = {
   origin: null,
   destination: null,
-  singleMarker: null
+  singleMarker: null,
 };
 
 export default function placeReducer(state = initialState, action) {
