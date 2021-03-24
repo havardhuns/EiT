@@ -16,6 +16,7 @@ import Avatar from '@material-ui/core/Avatar';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import WeatherIcon from 'react-icons-weather';
+import { getTrafficSituationsFromCoordinates } from "../actions/trafficsituationsAction";
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -38,10 +39,13 @@ const RoadInformation = () => {
 
     const origin = useSelector((state) => state.placeReducer.origin);
     const destination = useSelector((state) => state.placeReducer.destination);
+
+    const trafficSituations = useSelector((state) => state.trafficsituationsReducer);
     
     useEffect(() => {
         dispatch(getWeatherFromCoordinates(origin.lat, origin.lng, origin.name));
         dispatch(getWeatherFromCoordinates(destination.lat, destination.lng, destination.name));
+        dispatch(getTrafficSituationsFromCoordinates(trafficSituations))
       }, []);
 
     const names = [origin.name, destination.name]
