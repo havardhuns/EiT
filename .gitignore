@@ -5,8 +5,8 @@ __pycache__
 demo/
 node_modules/
 
-client/.eslintcache
-client/.eslintrc
+.eslintcache
+.eslintrc
 
 .DS_STORE
 client/src/.DS_Store

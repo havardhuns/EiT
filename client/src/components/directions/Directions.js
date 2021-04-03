@@ -2,7 +2,7 @@ import Map from "./Map";
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { withScriptjs } from "react-google-maps";
-import { setDirections, getRoutePath } from "../actions/directionsAcions";
+import { setDirections, getRoutePath } from "../../actions/directionsAcions";
 
 const Directions = () => {
   const origin = useSelector((state) => state.placeReducer.origin);

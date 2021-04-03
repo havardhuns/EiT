@@ -3,7 +3,7 @@ import PlacesAutocomplete, {
   geocodeByAddress,
   getLatLng,
 } from "react-places-autocomplete";
-import { classnames } from "../helpers";
+import { classnames } from "../../helpers";
 
 const PlaceSearch = (props) => {
   const [address, setAddress] = useState("");

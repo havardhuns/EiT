@@ -6,7 +6,7 @@ export const setTemperature = (temperature, time) => ({
 
 export function getTemperatureNow() {
   return (dispatch) => {
-    fetch("http://localhost:5000/temperature/now")
+    fetch("/api/temperature/now")
       .then(
         (response) => response.json(),
         (error) => console.log(error)

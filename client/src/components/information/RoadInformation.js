@@ -1,4 +1,4 @@
-import { getWeatherFromCoordinates } from "../actions/weatherAction";
+import { getWeatherFromCoordinates } from "../../actions/weatherAction";
 import { useSelector, useDispatch } from "react-redux";
 import React, { useEffect, useState } from "react";
 import List from "@material-ui/core/List";
@@ -9,16 +9,16 @@ import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
-import { setSingleMarker } from "../actions/placeActions";
+import { setSingleMarker } from "../../actions/placeActions";
 import Button from "@material-ui/core/Button";
 import DriveEtaIcon from "@material-ui/icons/DriveEta";
 import {
   setSelectedRouteIndex,
   getRoutePath,
-} from "../actions/directionsAcions";
+} from "../../actions/directionsAcions";
 import ListSubheader from "@material-ui/core/ListSubheader";
 import GifLoader from "react-gif-loader";
-import load from "../images/loading/delivery-truck.gif";
+import load from "../../images/loading/delivery-truck.gif";
 
 const useStyles = makeStyles((theme) => ({
   root: {
