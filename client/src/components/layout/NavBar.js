@@ -22,6 +22,7 @@ const NavBar = (props) => {
       {navBarItems.map((item) => (
         <NavBarItem item={item} redirect={redirect} key={item} />
       ))}
+      <h5 style={style.eit}>EiT Gruppe 2™</h5>
     </div>
   );
 };
@@ -63,6 +64,14 @@ const style = {
     color: "white",
     fontSize: "30px",
     cursor: "pointer",
+  },
+  eit: {
+    color: "white",
+    alignSelf: "flex-end",
+    verticalAlign: "bottom",
+    position: "absolute",
+    bottom: 0,
+    paddingRight: "25px",
   },
 };
 
