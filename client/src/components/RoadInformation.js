@@ -1,4 +1,4 @@
-import { getWeatherFromCoordinates } from "../../actions/weatherAction";
+import { getWeatherFromCoordinates } from "../actions/weatherAction";
 import { useSelector, useDispatch } from "react-redux";
 import React, { useEffect, useState } from "react";
 import List from "@material-ui/core/List";
@@ -9,17 +9,14 @@ import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
-import { setSingleMarker } from "../../actions/placeActions";
+import { setSingleMarker } from "../actions/placeActions";
 import Button from "@material-ui/core/Button";
 import DriveEtaIcon from "@material-ui/icons/DriveEta";
-import {
-  setSelectedRouteIndex,
-  getRoutePath,
-} from "../../actions/directionsAcions";
+import { setSelectedRouteIndex } from "../actions/directionsAcions";
 import ListSubheader from "@material-ui/core/ListSubheader";
 import GifLoader from "react-gif-loader";
-import load from "../../images/loading/delivery-truck.gif";
-import { getTrafficSituationsFromCoordinates } from "../../actions/trafficsituationsAction";
+import load from "../images/loading/delivery-truck.gif";
+import { getTrafficSituationsFromCoordinates } from "../actions/trafficsituationsAction";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -58,27 +55,18 @@ const RoadInformation = () => {
         destination.name
       )
     );
-    if (routePath) {
-      dispatch(
-        getWeatherFromCoordinates(
-          routePath[Math.floor(routePath.length / 2)].lat,
-          routePath[Math.floor(routePath.length / 2)].lng,
-          "random plass"
-        )
-      );
-    }
+    
   }, []);
 
   useEffect(() => {
-    if (routePath) {
-      dispatch(getTrafficSituationsFromCoordinates(routePath));
+    if(routePath) {
+      dispatch(getTrafficSituationsFromCoordinates(routePath))
     }
-  }, [routePath]);
+  }, [routePath])
 
   const selectRoute = (index) => {
     dispatch(setSelectedRouteIndex(index));
     setShowAlternativeRoutes(false);
-    getRoutePath(directions, index);
   };
 
   const names = [origin.name, destination.name];
@@ -119,7 +107,7 @@ const RoadInformation = () => {
               {weather[origin.name] &&
                 weather[destination.name] &&
                 names.map((name) => (
-                  <div key={name}>
+                  <div>
                     <ListItem button alignItems="flex-start">
                       <ListItemAvatar>
                         <Avatar
@@ -166,7 +154,7 @@ const RoadInformation = () => {
                 }
               >
                 {directions.routes.map((route, index) => (
-                  <div key={index}>
+                  <div>
                     <ListItem
                       button
                       alignItems="flex-start"

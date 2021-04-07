@@ -1,6 +1,7 @@
 from flask import Flask
 from routes.weather import weatherBlueprint
 from routes.persistance import persistanceBlueprint
+from routes.vegvesen import vegvesenBlueprint
 from flask_cors import CORS
 
 app = Flask(__name__, static_folder="build", static_url_path="/")
@@ -26,3 +27,4 @@ def sanity_test():
 
 app.register_blueprint(weatherBlueprint, url_prefix='/api')
 app.register_blueprint(persistanceBlueprint, url_prefix='/api')
+app.register_blueprint(vegvesenBlueprint, url_prefix='/api')

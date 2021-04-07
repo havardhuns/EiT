@@ -12,7 +12,6 @@ export function getWeatherFromCoordinates(lat, lng, placeName) {
         (error) => console.log(error)
       )
       .then((weather) => {
-        console.log(weather);
         dispatch(setWeather(placeName, weather));
       });
   };
