@@ -43,8 +43,6 @@ const RoadInformation = () => {
 
   const weather = useSelector((state) => state.weatherReducer);
 
-  const trafficSituations = useSelector((state) => state.trafficsituationsReducer);
-
   const origin = useSelector((state) => state.placeReducer.origin);
   const destination = useSelector((state) => state.placeReducer.destination);
 
@@ -59,8 +57,14 @@ const RoadInformation = () => {
         destination.name
       )
     );
-    dispatch(getTrafficSituationsFromCoordinates(trafficSituations))
+    
   }, []);
+
+  useEffect(() => {
+    if(routePath) {
+      dispatch(getTrafficSituationsFromCoordinates(routePath))
+    }
+  }, [routePath])
 
   const selectRoute = (index) => {
     dispatch(setSelectedRouteIndex(index));

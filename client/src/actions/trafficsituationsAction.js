@@ -3,16 +3,16 @@ export const setTraffic = (trafficSituations) => ({
     trafficSituations: trafficSituations
   });
 
-export function getTrafficSituationsFromCoordinates(coordinatePointsDict) {
+export function getTrafficSituationsFromCoordinates(coordinatePoints) {
     console.log("TRAFFIC ACTION CALLED")
-    console.log("Points: " + coordinatePointsDict)
+    console.log("Points: " + coordinatePoints)
     return (dispatch) => {
       fetch("http://localhost:5000/vegvesen", {
         method: 'POST',
-        //headers: {
-        //  'Content-Type': 'application/json',
-        //},
-        body: "coordinates: " + String(coordinatePointsDict)
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(coordinatePoints)
       })
         .then(
           (response) => response.json(),
