@@ -4,7 +4,7 @@ import {
   setOrigin,
   setDestination,
   setSingleMarker,
-} from "../actions/placeActions";
+} from "../../actions/placeActions";
 import { useSelector, useDispatch } from "react-redux";
 import React, { useEffect, useState } from "react";
 import { RiMapPinRangeLine, RiMapPinLine } from "react-icons/ri";

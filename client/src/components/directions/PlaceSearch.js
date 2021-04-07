@@ -3,7 +3,7 @@ import PlacesAutocomplete, {
   geocodeByAddress,
   getLatLng,
 } from "react-places-autocomplete";
-import { classnames } from "../helpers";
+import { classnames } from "../../helpers";
 
 const PlaceSearch = (props) => {
   const [address, setAddress] = useState("");
@@ -52,7 +52,7 @@ const PlaceSearch = (props) => {
               </div>
               {suggestions.length > 0 && (
                 <div className="autocomplete-container">
-                  {suggestions.map((suggestion) => {
+                  {suggestions.map((suggestion, index) => {
                     const className = classnames("suggestion-item", {
                       "suggestion-item--active": suggestion.active,
                     });
@@ -60,6 +60,7 @@ const PlaceSearch = (props) => {
                     return (
                       <div
                         {...getSuggestionItemProps(suggestion, { className })}
+                        key={index}
                       >
                         <strong>
                           {suggestion.formattedSuggestion.mainText}

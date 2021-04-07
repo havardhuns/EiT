@@ -1,8 +1,7 @@
 import { useSelector } from "react-redux";
-import Directions from "./Directions";
-import DirectionsSelector from "./DirectionsSelector";
-import RoadInformation from "./RoadInformation";
-import { MuiThemeProvider } from "@material-ui/core/styles";
+import Directions from "../directions/Directions";
+import DirectionsSelector from "../directions/DirectionsSelector";
+import RoadInformation from "../information/RoadInformation";
 import { createMuiTheme } from "@material-ui/core/styles";
 import blue from "@material-ui/core/colors/blue";
 import CssBaseline from "@material-ui/core/CssBaseline";
@@ -21,9 +20,7 @@ const Home = () => {
           <DirectionsSelector />
         </div>
       </div>
-      <MuiThemeProvider theme={theme}>
-        {directionsSelected && <RoadInformation />}
-      </MuiThemeProvider>
+      {directionsSelected && <RoadInformation />}
     </div>
   );
 };
@@ -47,5 +44,3 @@ const style = {
     left: "25%",
   },
 };
-
-const theme = createMuiTheme({});
