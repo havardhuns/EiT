@@ -40,3 +40,17 @@ def weather(lat, lng, time):
         return json.dumps(weather)
     else:
         return str(req.status_code) + "reason from met api: " + req.reason
+
+@weatherBlueprint.route('/weather/glatt/lat/<lat>/lng/<lng>/time/<time>', methods = ['GET'])
+def isGlatt(lat, lng, time):
+    # criteria: presently about 0 degrees, precipitation; preferably also history and forecast
+
+    # Hvordan defineres punktene langs ruten i GMaps API-et? Avstand langs ruten? 
+    # Hvor lagres ruten?
+    # Hvor bør ruten prosesseres? Server?
+    current_weather = json.loads( weather(lat, lng, time) )
+    glatt_dict = {
+        'glatt': abs( current_weather['data']['instant']['details']['air_temperature'] ) < 3
+    }
+    return json.dumps(glatt_dict)
+
