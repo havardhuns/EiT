@@ -1,14 +1,14 @@
 import { combineReducers } from "redux";
 import temperatureReducer from "./temperatureReducer";
 import placeReducer from "./placeReducer";
-import weatherReducer from "./weatherReducer";
+import roadInformation from "./roadInformationReducer";
 import directionsReducer from "./directionsReducer";
 
 const rootReducer = combineReducers({
   temperatureReducer,
   placeReducer,
-  weatherReducer,
   directionsReducer,
+  roadInformation,
 });
 
 export default rootReducer;

@@ -28,7 +28,6 @@ const Directions = () => {
         if (status === window.google.maps.DirectionsStatus.OK) {
           dispatch(getRoutePath(result, selectedRouteIndex));
           setTimeout(() => {
-            console.log(result);
             dispatch(setDirections(result));
           }, 500);
         } else {
