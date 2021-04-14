@@ -25,6 +25,7 @@ const Directions = () => {
         provideRouteAlternatives: true,
       },
       (result, status) => {
+        console.log(result);
         if (status === window.google.maps.DirectionsStatus.OK) {
           dispatch(getRoutePath(result, selectedRouteIndex));
           setTimeout(() => {

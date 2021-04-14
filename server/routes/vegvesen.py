@@ -11,10 +11,9 @@ vegvesenBlueprint = Blueprint('vegvesen', __name__)
 headers = {"User-Agent": "weather EiT app"}
 
 
-@vegvesenBlueprint.route('/vegvesen', methods=['GET'])
+@vegvesenBlueprint.route('/vegvesen', methods=['POST'])
 def getTrafficSituations():
-    data = json.loads(request.args.get(
-        'coordinatesList', default="[]", type=str))
+    data = request.get_json()
 
     req = requests.get('https://www.vegvesen.no/ws/no/vegvesen/veg/trafikkpublikasjon/trafikk/2/GetSituation',
                        auth=("TjeDatexEiT", "zQNZseNimpy8JhPNCsB4"))

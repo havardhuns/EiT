@@ -20,6 +20,7 @@ import load from "../../images/loading/delivery-truck.gif";
 import {
   getWeatherFromCoordinates,
   getTrafficSituationsFromCoordinates,
+  clearRoadInformation,
 } from "../../actions/roadInformationAction";
 import RoadInformationItem from "./RoadInformationItem";
 
@@ -50,24 +51,45 @@ const RoadInformation = () => {
 
   useEffect(() => {
     if (routePath) {
-      dispatch(getWeatherFromCoordinates(routePath[0]));
-      dispatch(getWeatherFromCoordinates(routePath[routePath.length - 1]));
-      dispatch(getTrafficSituationsFromCoordinates(routePath));
+      dispatch(clearRoadInformation());
+      setTimeout(() => {
+        console.log(roadInformation);
+        dispatch(getWeatherFromCoordinates(routePath[0]));
+        dispatch(getWeatherFromCoordinates(routePath[routePath.length - 1]));
+        dispatch(getTrafficSituationsFromCoordinates(routePath));
+      }, 2000);
     }
   }, [routePath]);
 
-  const selectRoute = (index) => {
-    dispatch(setSelectedRouteIndex(index));
+  const selectRoute = (newIndex) => {
+    if (newIndex !== index) {
+      dispatch(getRoutePath(directions, newIndex));
+    }
+    dispatch(setSelectedRouteIndex(newIndex));
     setShowAlternativeRoutes(false);
-    getRoutePath(directions, index);
   };
 
   return (
     <div style={{ height: "50%" }}>
-      {!(
-        roadInformation.roadInformation.length !== 0 &&
-        roadInformation.loading.length === 0
-      ) ? (
+      {roadInformation.error ? (
+        <div
+          style={{
+            height: "100%",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            color: "red",
+          }}
+        >
+          <h1>ERROR</h1>
+          <h3>{roadInformation.error}</h3>
+          <h3>Please try again</h3>
+        </div>
+      ) : !(
+          roadInformation.roadInformation.length !== 0 &&
+          roadInformation.loading.length === 0
+        ) ? (
         <div
           style={{
             height: "100%",
