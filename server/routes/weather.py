@@ -44,7 +44,6 @@ def weather(lat, lng, time):
         return json.dumps(weather)
     else:
         return str(req.status_code) + "reason from met api: " + req.reason
-<<<<<<< HEAD
 
 @weatherBlueprint.route('/weather/glatt/lat/<lat>/lng/<lng>/time/<time>', methods = ['GET'])
 def isGlatt(lat, lng, time):
@@ -59,5 +58,3 @@ def isGlatt(lat, lng, time):
     }
     return json.dumps(glatt_dict)
 
-=======
->>>>>>> develop
