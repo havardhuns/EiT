@@ -44,7 +44,7 @@ def weather(lat, lng, time):
         return json.dumps(weather)
     else:
         return str(req.status_code) + "reason from met api: " + req.reason
-
+        
 @weatherBlueprint.route('/weather/glatt/lat/<lat>/lng/<lng>/time/<time>', methods = ['GET'])
 def isGlatt(lat, lng, time):
     # criteria: presently about 0 degrees, precipitation; preferably also history and forecast
@@ -58,3 +58,12 @@ def isGlatt(lat, lng, time):
     }
     return json.dumps(glatt_dict)
 
+def testGlatt():
+    with open(r'..\evjetrondheim.txt', 'r') as f:
+        route = json.load(f)
+        for coords in route:
+            # requests.get(f"http://localhost:5000/weather/glatt/lat/{coords['lat']}/lng/{coords['lng']}/time/now")
+            isGlatt(coords.lat, coords.lng, 'now')
+
+if __name__ == '__main__':
+    testGlatt()
