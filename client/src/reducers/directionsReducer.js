@@ -22,6 +22,8 @@ export default function directionsReducer(state = initialState, action) {
         ...state,
         routePath: action.payload,
       };
+    case "CLEAR_DIRECTIONS":
+      return initialState;
     default:
       return state;
   }

@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from "react-redux";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import Divider from "@material-ui/core/Divider";
@@ -13,7 +13,7 @@ import DriveEtaIcon from "@material-ui/icons/DriveEta";
 import {
   setSelectedRouteIndex,
   getRoutePath,
-} from "../../actions/directionsAcions";
+} from "../../actions/directionsAction";
 import ListSubheader from "@material-ui/core/ListSubheader";
 import GifLoader from "react-gif-loader";
 import load from "../../images/loading/delivery-truck.gif";
@@ -49,15 +49,16 @@ const RoadInformation = () => {
 
   const [showAlternativeRoutes, setShowAlternativeRoutes] = useState(false);
 
+  const getRoadInformation = (path) => {
+    dispatch(clearRoadInformation());
+    dispatch(getWeatherFromCoordinates(path[0]));
+    dispatch(getWeatherFromCoordinates(path[path.length - 1]));
+    dispatch(getTrafficSituationsFromCoordinates(path));
+  };
+
   useEffect(() => {
     if (routePath) {
-      dispatch(clearRoadInformation());
-      setTimeout(() => {
-        console.log(roadInformation);
-        dispatch(getWeatherFromCoordinates(routePath[0]));
-        dispatch(getWeatherFromCoordinates(routePath[routePath.length - 1]));
-        dispatch(getTrafficSituationsFromCoordinates(routePath));
-      }, 2000);
+      getRoadInformation(routePath);
     }
   }, [routePath]);
 
