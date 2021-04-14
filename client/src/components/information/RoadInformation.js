@@ -20,6 +20,7 @@ import load from "../../images/loading/delivery-truck.gif";
 import {
   getWeatherFromCoordinates,
   getTrafficSituationsFromCoordinates,
+  getGlatt,
   clearRoadInformation,
 } from "../../actions/roadInformationAction";
 import RoadInformationItem from "./RoadInformationItem";
@@ -54,6 +55,7 @@ const RoadInformation = () => {
     dispatch(getWeatherFromCoordinates(path[0]));
     dispatch(getWeatherFromCoordinates(path[path.length - 1]));
     dispatch(getTrafficSituationsFromCoordinates(path));
+    dispatch(getGlatt(path));
   };
 
   useEffect(() => {

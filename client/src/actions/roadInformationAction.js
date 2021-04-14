@@ -65,3 +65,27 @@ export function getTrafficSituationsFromCoordinates(coordinatePoints) {
       .catch((error) => dispatch(addRoadInformationError(error.message)));
   };
 }
+
+export function getGlatt(coordinatePoints) {
+  return (dispatch) => {
+    dispatch(addRoadInformationBegin());
+    fetch("/api/weather/glatt/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(coordinatePoints),
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error(response.statusText);
+        }
+      })
+      .then((glatt) => {
+        dispatch(addRoadInformationSuccess(glatt));
+      })
+      .catch((error) => dispatch(addRoadInformationError(error.message)));
+  };
+}

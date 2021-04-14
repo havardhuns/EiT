@@ -6,6 +6,7 @@ import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import trafficIcon from "../../images/icons/traffic-jam.png";
+import glattIcon from "../../images/icons/glatt-vei-skilt.png"; // or glatt-gulv-skilt.png for fun
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -22,6 +23,8 @@ const RoadInformationItem = (props) => {
     return <WeatherItem information={props.information} />;
   } else if (props.information.type == "traffic") {
     return <TrafficItem information={props.information} />;
+  } else if (props.information.type == "glatt") {
+    return <GlattItem information={props.information} />;
   } else {
     return <div>wtf</div>;
   }
@@ -75,6 +78,34 @@ const TrafficItem = (props) => {
         primary={props.information.location}
         secondary={
           <React.Fragment>{"      " + props.information.data}</React.Fragment>
+        }
+      />
+    </ListItem>
+  );
+};
+
+const GlattItem = (props) => {
+  const classes = useStyles();
+
+  return (
+    <ListItem button alignItems="flex-start">
+      <ListItemAvatar>
+        <Avatar src={glattIcon} />
+      </ListItemAvatar>
+      <ListItemText
+        primary={props.information.location}
+        secondary={
+          <React.Fragment>
+            <Typography
+              component="span"
+              variant="body2"
+              className={classes.inline}
+              color="textPrimary"
+            >
+            </Typography>
+            {"      " +
+              props.information.data }
+          </React.Fragment>
         }
       />
     </ListItem>

@@ -64,10 +64,8 @@ def getTrafficSituations():
                     lat = float(situation[1])
                     lng = float(situation[2])
                     location = get_placename_from_coordinates(lat, lng)
-                    info = {"type": "traffic", "lat": lat, "lng": lng,
-                            "data": situation[0], "location": location}
-                    if not any(warning["location"] == location for warning in trafficWarnings):
-                        trafficWarnings.append(info)
+                    trafficWarnings.append(
+                        {"type": "traffic", "lat": lat, "lng": lng, "data": situation[0], "location": location})
 
         return json.dumps(trafficWarnings)
         # return '{"backend response": "' + str(result) + '"}'
