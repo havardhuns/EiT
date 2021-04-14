@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from "react-redux";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import Divider from "@material-ui/core/Divider";
@@ -13,15 +13,17 @@ import DriveEtaIcon from "@material-ui/icons/DriveEta";
 import {
   setSelectedRouteIndex,
   getRoutePath,
-} from "../../actions/directionsAcions";
+} from "../../actions/directionsAction";
 import ListSubheader from "@material-ui/core/ListSubheader";
 import GifLoader from "react-gif-loader";
 import load from "../../images/loading/delivery-truck.gif";
 import {
   getWeatherFromCoordinates,
   getTrafficSituationsFromCoordinates,
+  clearRoadInformation,
 } from "../../actions/roadInformationAction";
 import RoadInformationItem from "./RoadInformationItem";
+import { setTemporaryMarker } from "../../actions/placeActions";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,10 +35,33 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+function calcCrow(lat1, lon1, lat2, lon2) {
+  var R = 6371; // km
+  var dLat = toRad(lat2 - lat1);
+  var dLon = toRad(lon2 - lon1);
+  var lat1 = toRad(lat1);
+  var lat2 = toRad(lat2);
+
+  var a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(lat1) * Math.cos(lat2);
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  var d = R * c;
+  return d;
+}
+
+// Converts numeric degrees to radians
+function toRad(Value) {
+  return (Value * Math.PI) / 180;
+}
+
 const RoadInformation = () => {
   const classes = useStyles();
 
   const directions = useSelector((state) => state.directionsReducer.directions);
+  const temporaryMarker = useSelector(
+    (state) => state.placeReducer.temporaryMarker
+  );
   const index = useSelector(
     (state) => state.directionsReducer.selectedRouteIndex
   );
@@ -44,30 +69,70 @@ const RoadInformation = () => {
 
   const dispatch = useDispatch();
 
-  const roadInformation = useSelector((state) => state.roadInformation);
+  const roadInformation = useSelector((state) => state.roadInformationReducer);
+  const origin = useSelector((state) => state.placeReducer.origin);
 
   const [showAlternativeRoutes, setShowAlternativeRoutes] = useState(false);
 
+  const getRoadInformation = (path) => {
+    dispatch(clearRoadInformation());
+    dispatch(getWeatherFromCoordinates(path[0]));
+    dispatch(getWeatherFromCoordinates(path[path.length - 1]));
+    dispatch(getTrafficSituationsFromCoordinates(path));
+  };
+
   useEffect(() => {
     if (routePath) {
-      dispatch(getWeatherFromCoordinates(routePath[0]));
-      dispatch(getWeatherFromCoordinates(routePath[routePath.length - 1]));
-      dispatch(getTrafficSituationsFromCoordinates(routePath));
+      getRoadInformation(routePath);
     }
   }, [routePath]);
 
-  const selectRoute = (index) => {
-    dispatch(setSelectedRouteIndex(index));
+  const sortRoadInformation = (origin, roadInformationList) => {
+    let sortedInfo = roadInformationList.sort(
+      (a, b) =>
+        calcCrow(a.lat, a.lng, origin.lat, origin.lng) -
+        calcCrow(b.lat, b.lng, origin.lat, origin.lng)
+    );
+    if (sortedInfo[sortedInfo.length - 1].type !== "weather") {
+      for (let i = sortedInfo.length - 1; i >= 0; i--) {
+        if (sortedInfo[i].type === "weather") {
+          sortedInfo.push(sortedInfo.splice(i, 1).pop());
+          break;
+        }
+      }
+    }
+    return sortedInfo;
+  };
+
+  const selectRoute = (newIndex) => {
+    if (newIndex !== index) {
+      dispatch(getRoutePath(directions, newIndex));
+    }
+    dispatch(setSelectedRouteIndex(newIndex));
     setShowAlternativeRoutes(false);
-    getRoutePath(directions, index);
   };
 
   return (
     <div style={{ height: "50%" }}>
-      {!(
-        roadInformation.roadInformation.length !== 0 &&
-        roadInformation.loading.length === 0
-      ) ? (
+      {roadInformation.error ? (
+        <div
+          style={{
+            height: "100%",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            color: "red",
+          }}
+        >
+          <h1>ERROR</h1>
+          <h3>{roadInformation.error}</h3>
+          <h3>Please try again</h3>
+        </div>
+      ) : !(
+          roadInformation.roadInformationList.length !== 0 &&
+          roadInformation.loading.length === 0
+        ) ? (
         <div
           style={{
             height: "100%",
@@ -99,9 +164,15 @@ const RoadInformation = () => {
                 </ListSubheader>
               }
             >
-              {roadInformation.roadInformation.map((information, i) => (
+              {sortRoadInformation(
+                origin,
+                roadInformation.roadInformationList
+              ).map((information, i) => (
                 <div key={i}>
-                  <RoadInformationItem information={information} />
+                  <RoadInformationItem
+                    information={information}
+                    marker={temporaryMarker}
+                  />
                   <Divider variant="inset" component="li" />
                 </div>
               ))}

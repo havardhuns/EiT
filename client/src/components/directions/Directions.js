@@ -1,13 +1,20 @@
 import Map from "./Map";
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
-import { withScriptjs } from "react-google-maps";
-import { setDirections, getRoutePath } from "../../actions/directionsAcions";
+import {
+  setDirections,
+  getRoutePath,
+  clearDirections,
+} from "../../actions/directionsAction";
+import { setTemporaryMarker } from "../../actions/placeActions";
 
 const Directions = () => {
   const origin = useSelector((state) => state.placeReducer.origin);
   const destination = useSelector((state) => state.placeReducer.destination);
   const singleMarker = useSelector((state) => state.placeReducer.singleMarker);
+  const temporaryMarker = useSelector(
+    (state) => state.placeReducer.temporaryMarker
+  );
   const directions = useSelector((state) => state.directionsReducer.directions);
   const selectedRouteIndex = useSelector(
     (state) => state.directionsReducer.selectedRouteIndex
@@ -41,16 +48,15 @@ const Directions = () => {
     if (origin && destination) {
       getDirections(origin, destination);
     } else {
-      dispatch(setDirections(null));
+      dispatch(clearDirections());
+      dispatch(setTemporaryMarker(null));
     }
   }, [origin, destination]);
 
-  const MapLoader = withScriptjs(Map);
   return (
-    <MapLoader
-      googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyCVeQW1Rhy24_GLHqGsLf6KHoUTkGCwAOA"
-      loadingElement={<div style={{ height: `100%` }} />}
+    <Map
       singleMarker={singleMarker}
+      temporaryMarker={temporaryMarker}
       showMarker={
         !directions || (singleMarker !== origin && singleMarker !== destination)
       }

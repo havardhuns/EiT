@@ -9,6 +9,7 @@ import CssBaseline from "@material-ui/core/CssBaseline";
 const Home = () => {
   const origin = useSelector((state) => state.placeReducer.origin);
   const destination = useSelector((state) => state.placeReducer.destination);
+  const routePath = useSelector((state) => state.directionsReducer.routePath);
 
   const directionsSelected = origin && destination;
 

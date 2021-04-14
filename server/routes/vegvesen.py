@@ -11,10 +11,9 @@ vegvesenBlueprint = Blueprint('vegvesen', __name__)
 headers = {"User-Agent": "weather EiT app"}
 
 
-@vegvesenBlueprint.route('/vegvesen', methods=['GET'])
+@vegvesenBlueprint.route('/vegvesen', methods=['POST'])
 def getTrafficSituations():
-    data = json.loads(request.args.get(
-        'coordinatesList', default="[]", type=str))
+    data = request.get_json()
 
     req = requests.get('https://www.vegvesen.no/ws/no/vegvesen/veg/trafikkpublikasjon/trafikk/2/GetSituation',
                        auth=("TjeDatexEiT", "zQNZseNimpy8JhPNCsB4"))
@@ -65,8 +64,10 @@ def getTrafficSituations():
                     lat = float(situation[1])
                     lng = float(situation[2])
                     location = get_placename_from_coordinates(lat, lng)
-                    trafficWarnings.append(
-                        {"type": "traffic", "lat": lat, "lng": lng, "data": situation[0], "location": location})
+                    info = {"type": "traffic", "lat": lat, "lng": lng,
+                            "data": situation[0], "location": location}
+                    if not any(warning["location"] == location for warning in trafficWarnings):
+                        trafficWarnings.append(info)
 
         return json.dumps(trafficWarnings)
         # return '{"backend response": "' + str(result) + '"}'
