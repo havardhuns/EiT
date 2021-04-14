@@ -19,7 +19,8 @@ export default function roadInformationReducer(state = initialState, action) {
         error: action.payload,
         loading: state.loading.slice(0, -1),
       };
-
+    case "CLEAR_ROAD_INFORMATION":
+      return initialState;
     default:
       return state;
   }

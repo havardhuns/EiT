@@ -13,6 +13,10 @@ export const setRoutePath = (routePath) => ({
   payload: routePath,
 });
 
+export const clearDirections = () => ({
+  type: "CLEAR_DIRECTIONS",
+});
+
 export function getRoutePath(directions, routeIndex) {
   var path = window.google.maps.geometry.encoding.decodePath(
     directions.routes[routeIndex].overview_polyline

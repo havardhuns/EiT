@@ -12,6 +12,10 @@ export const addRoadInformationError = (error) => ({
   payload: error,
 });
 
+export const clearRoadInformation = () => ({
+  type: "CLEAR_ROAD_INFORMATION",
+});
+
 export function getWeatherFromCoordinates(latLng, placeName = "") {
   return (dispatch) => {
     dispatch(addRoadInformationBegin());
@@ -24,32 +28,40 @@ export function getWeatherFromCoordinates(latLng, placeName = "") {
         "&pn=" +
         placeName
     )
-      .then(
-        (response) => response.json(),
-        (error) => {
-          console.log(error);
-          addRoadInformationError(error);
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error(response.statusText);
         }
-      )
+      })
       .then((weather) => {
         dispatch(addRoadInformationSuccess(weather));
-      });
+      })
+      .catch((error) => dispatch(addRoadInformationError(error.message)));
   };
 }
 
 export function getTrafficSituationsFromCoordinates(coordinatePoints) {
   return (dispatch) => {
     dispatch(addRoadInformationBegin());
-    fetch("/api/vegvesen?coordinatesList=" + JSON.stringify(coordinatePoints))
-      .then(
-        (response) => response.json(),
-        (error) => {
-          console.log(error);
-          addRoadInformationError(error);
+    fetch("/api/vegvesen", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(coordinatePoints),
+    })
+      .then((response) => {
+        if (response.ok) {
+          return response.json();
+        } else {
+          throw new Error(response.statusText);
         }
-      )
+      })
       .then((trafficSituations) => {
         dispatch(addRoadInformationSuccess(trafficSituations));
-      });
+      })
+      .catch((error) => dispatch(addRoadInformationError(error.message)));
   };
 }
