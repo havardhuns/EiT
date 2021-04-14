@@ -23,6 +23,7 @@ import {
   clearRoadInformation,
 } from "../../actions/roadInformationAction";
 import RoadInformationItem from "./RoadInformationItem";
+import { setTemporaryMarker } from "../../actions/placeActions";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -34,10 +35,33 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+function calcCrow(lat1, lon1, lat2, lon2) {
+  var R = 6371; // km
+  var dLat = toRad(lat2 - lat1);
+  var dLon = toRad(lon2 - lon1);
+  var lat1 = toRad(lat1);
+  var lat2 = toRad(lat2);
+
+  var a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.sin(dLon / 2) * Math.sin(dLon / 2) * Math.cos(lat1) * Math.cos(lat2);
+  var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+  var d = R * c;
+  return d;
+}
+
+// Converts numeric degrees to radians
+function toRad(Value) {
+  return (Value * Math.PI) / 180;
+}
+
 const RoadInformation = () => {
   const classes = useStyles();
 
   const directions = useSelector((state) => state.directionsReducer.directions);
+  const temporaryMarker = useSelector(
+    (state) => state.placeReducer.temporaryMarker
+  );
   const index = useSelector(
     (state) => state.directionsReducer.selectedRouteIndex
   );
@@ -45,7 +69,8 @@ const RoadInformation = () => {
 
   const dispatch = useDispatch();
 
-  const roadInformation = useSelector((state) => state.roadInformation);
+  const roadInformation = useSelector((state) => state.roadInformationReducer);
+  const origin = useSelector((state) => state.placeReducer.origin);
 
   const [showAlternativeRoutes, setShowAlternativeRoutes] = useState(false);
 
@@ -61,6 +86,23 @@ const RoadInformation = () => {
       getRoadInformation(routePath);
     }
   }, [routePath]);
+
+  const sortRoadInformation = (origin, roadInformationList) => {
+    let sortedInfo = roadInformationList.sort(
+      (a, b) =>
+        calcCrow(a.lat, a.lng, origin.lat, origin.lng) -
+        calcCrow(b.lat, b.lng, origin.lat, origin.lng)
+    );
+    if (sortedInfo[sortedInfo.length - 1].type !== "weather") {
+      for (let i = sortedInfo.length - 1; i >= 0; i--) {
+        if (sortedInfo[i].type === "weather") {
+          sortedInfo.push(sortedInfo.splice(i, 1).pop());
+          break;
+        }
+      }
+    }
+    return sortedInfo;
+  };
 
   const selectRoute = (newIndex) => {
     if (newIndex !== index) {
@@ -88,7 +130,7 @@ const RoadInformation = () => {
           <h3>Please try again</h3>
         </div>
       ) : !(
-          roadInformation.roadInformation.length !== 0 &&
+          roadInformation.roadInformationList.length !== 0 &&
           roadInformation.loading.length === 0
         ) ? (
         <div
@@ -122,9 +164,15 @@ const RoadInformation = () => {
                 </ListSubheader>
               }
             >
-              {roadInformation.roadInformation.map((information, i) => (
+              {sortRoadInformation(
+                origin,
+                roadInformation.roadInformationList
+              ).map((information, i) => (
                 <div key={i}>
-                  <RoadInformationItem information={information} />
+                  <RoadInformationItem
+                    information={information}
+                    marker={temporaryMarker}
+                  />
                   <Divider variant="inset" component="li" />
                 </div>
               ))}
