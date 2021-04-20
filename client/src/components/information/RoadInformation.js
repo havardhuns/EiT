@@ -1,12 +1,10 @@
-import { getWeatherFromCoordinates } from "../../actions/weatherAction";
 import { useSelector, useDispatch } from "react-redux";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import Divider from "@material-ui/core/Divider";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
-import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import { setSingleMarker } from "../../actions/placeActions";
@@ -15,11 +13,17 @@ import DriveEtaIcon from "@material-ui/icons/DriveEta";
 import {
   setSelectedRouteIndex,
   getRoutePath,
-} from "../../actions/directionsAcions";
+} from "../../actions/directionsAction";
 import ListSubheader from "@material-ui/core/ListSubheader";
 import GifLoader from "react-gif-loader";
 import load from "../../images/loading/delivery-truck.gif";
-import { getTrafficSituationsFromCoordinates } from "../../actions/trafficsituationsAction";
+import {
+  getWeatherFromCoordinates,
+  getTrafficSituationsFromCoordinates,
+  getGlatt,
+  clearRoadInformation,
+} from "../../actions/roadInformationAction";
+import RoadInformationItem from "./RoadInformationItem";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -42,50 +46,53 @@ const RoadInformation = () => {
 
   const dispatch = useDispatch();
 
-  const weather = useSelector((state) => state.weatherReducer);
-
-  const origin = useSelector((state) => state.placeReducer.origin);
-  const destination = useSelector((state) => state.placeReducer.destination);
+  const roadInformation = useSelector((state) => state.roadInformation);
 
   const [showAlternativeRoutes, setShowAlternativeRoutes] = useState(false);
 
-  useEffect(() => {
-    dispatch(getWeatherFromCoordinates(origin.lat, origin.lng, origin.name));
-    dispatch(
-      getWeatherFromCoordinates(
-        destination.lat,
-        destination.lng,
-        destination.name
-      )
-    );
-    if (routePath) {
-      dispatch(
-        getWeatherFromCoordinates(
-          routePath[Math.floor(routePath.length / 2)].lat,
-          routePath[Math.floor(routePath.length / 2)].lng,
-          "random plass"
-        )
-      );
-    }
-  }, []);
+  const getRoadInformation = (path) => {
+    dispatch(clearRoadInformation());
+    dispatch(getWeatherFromCoordinates(path[0]));
+    dispatch(getWeatherFromCoordinates(path[path.length - 1]));
+    dispatch(getTrafficSituationsFromCoordinates(path));
+    dispatch(getGlatt(path));
+  };
 
   useEffect(() => {
     if (routePath) {
-      dispatch(getTrafficSituationsFromCoordinates(routePath));
+      getRoadInformation(routePath);
     }
   }, [routePath]);
 
-  const selectRoute = (index) => {
-    dispatch(setSelectedRouteIndex(index));
+  const selectRoute = (newIndex) => {
+    if (newIndex !== index) {
+      dispatch(getRoutePath(directions, newIndex));
+    }
+    dispatch(setSelectedRouteIndex(newIndex));
     setShowAlternativeRoutes(false);
-    getRoutePath(directions, index);
   };
-
-  const names = [origin.name, destination.name];
 
   return (
     <div style={{ height: "50%" }}>
-      {!directions ? (
+      {roadInformation.error ? (
+        <div
+          style={{
+            height: "100%",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            color: "red",
+          }}
+        >
+          <h1>ERROR</h1>
+          <h3>{roadInformation.error}</h3>
+          <h3>Please try again</h3>
+        </div>
+      ) : !(
+          roadInformation.roadInformation.length !== 0 &&
+          roadInformation.loading.length === 0
+        ) ? (
         <div
           style={{
             height: "100%",
@@ -106,9 +113,10 @@ const RoadInformation = () => {
           </Typography>
         </div>
       ) : (
-        <div>
+        <div style={{ height: "100%" }}>
           {!showAlternativeRoutes ? (
             <List
+              style={{ maxHeight: "100%", overflow: "auto" }}
               className={classes.root}
               subheader={
                 <ListSubheader component="div" id="nested-list-subheader">
@@ -116,44 +124,12 @@ const RoadInformation = () => {
                 </ListSubheader>
               }
             >
-              {weather[origin.name] &&
-                weather[destination.name] &&
-                names.map((name) => (
-                  <div key={name}>
-                    <ListItem button alignItems="flex-start">
-                      <ListItemAvatar>
-                        <Avatar
-                          src={
-                            "https://folk.ntnu.no/haavarhu/weathericon/svg/" +
-                            weather[name].data.next_1_hours.summary
-                              .symbol_code +
-                            ".svg"
-                          }
-                        />
-                      </ListItemAvatar>
-                      <ListItemText
-                        primary={name}
-                        secondary={
-                          <React.Fragment>
-                            <Typography
-                              component="span"
-                              variant="body2"
-                              className={classes.inline}
-                              color="textPrimary"
-                            >
-                              Temperatur
-                            </Typography>
-                            {"      " +
-                              weather[name].data.instant.details
-                                .air_temperature +
-                              "°C"}
-                          </React.Fragment>
-                        }
-                      />
-                    </ListItem>
-                    <Divider variant="inset" component="li" />
-                  </div>
-                ))}
+              {roadInformation.roadInformation.map((information, i) => (
+                <div key={i}>
+                  <RoadInformationItem information={information} />
+                  <Divider variant="inset" component="li" />
+                </div>
+              ))}
             </List>
           ) : (
             <div>

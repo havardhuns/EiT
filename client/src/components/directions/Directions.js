@@ -2,7 +2,11 @@ import Map from "./Map";
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { withScriptjs } from "react-google-maps";
-import { setDirections, getRoutePath } from "../../actions/directionsAcions";
+import {
+  setDirections,
+  getRoutePath,
+  clearDirections,
+} from "../../actions/directionsAction";
 
 const Directions = () => {
   const origin = useSelector((state) => state.placeReducer.origin);
@@ -28,7 +32,6 @@ const Directions = () => {
         if (status === window.google.maps.DirectionsStatus.OK) {
           dispatch(getRoutePath(result, selectedRouteIndex));
           setTimeout(() => {
-            console.log(result);
             dispatch(setDirections(result));
           }, 500);
         } else {
@@ -42,7 +45,7 @@ const Directions = () => {
     if (origin && destination) {
       getDirections(origin, destination);
     } else {
-      dispatch(setDirections(null));
+      dispatch(clearDirections());
     }
   }, [origin, destination]);
 
