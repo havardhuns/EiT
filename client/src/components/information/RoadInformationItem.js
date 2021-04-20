@@ -6,7 +6,12 @@ import Avatar from "@material-ui/core/Avatar";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import trafficIcon from "../../images/icons/traffic-jam.png";
-import glattIcon from "../../images/icons/glatt-vei-skilt.png"; // or glatt-gulv-skilt.png for fun
+import glattIcon from "../../images/icons/glatt-vei-skilt.jpg"; // or glatt-gulv-skilt.png for fun
+import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
+import IconButton from "@material-ui/core/IconButton";
+import CloseIcon from "@material-ui/icons/Close";
+import { setTemporaryMarker } from "../../actions/placeActions";
+import { useSelector, useDispatch } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -19,9 +24,43 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const RoadInformationItem = (props) => {
-  if (props.information.type == "weather") {
+  const dispatch = useDispatch();
+
+  return (
+    <ListItem
+      button
+      alignItems="flex-start"
+      onClick={() =>
+        dispatch(
+          setTemporaryMarker({
+            lat: props.information.lat,
+            lng: props.information.lng,
+          })
+        )
+      }
+    >
+      <ItemContent information={props.information} />
+      {props.marker &&
+        props.marker.lon === props.information.lon &&
+        props.marker.lng === props.information.lng && (
+          <ListItemSecondaryAction>
+            <IconButton
+              edge="end"
+              aria-label="delete"
+              onClick={() => dispatch(setTemporaryMarker(null))}
+            >
+              <CloseIcon />
+            </IconButton>
+          </ListItemSecondaryAction>
+        )}
+    </ListItem>
+  );
+};
+
+const ItemContent = (props) => {
+  if (props.information.type === "weather") {
     return <WeatherItem information={props.information} />;
-  } else if (props.information.type == "traffic") {
+  } else if (props.information.type === "traffic") {
     return <TrafficItem information={props.information} />;
   } else if (props.information.type == "glatt") {
     return <GlattItem information={props.information} />;
@@ -34,7 +73,7 @@ const WeatherItem = (props) => {
   const classes = useStyles();
 
   return (
-    <ListItem button alignItems="flex-start">
+    <React.Fragment>
       <ListItemAvatar>
         <Avatar
           src={
@@ -62,15 +101,13 @@ const WeatherItem = (props) => {
           </React.Fragment>
         }
       />
-    </ListItem>
+    </React.Fragment>
   );
 };
 
 const TrafficItem = (props) => {
-  const classes = useStyles();
-
   return (
-    <ListItem button alignItems="flex-start">
+    <React.Fragment>
       <ListItemAvatar>
         <Avatar src={trafficIcon} />
       </ListItemAvatar>
@@ -80,7 +117,7 @@ const TrafficItem = (props) => {
           <React.Fragment>{"      " + props.information.data}</React.Fragment>
         }
       />
-    </ListItem>
+    </React.Fragment>
   );
 };
 
@@ -88,7 +125,7 @@ const GlattItem = (props) => {
   const classes = useStyles();
 
   return (
-    <ListItem button alignItems="flex-start">
+    <React.Fragment>
       <ListItemAvatar>
         <Avatar src={glattIcon} />
       </ListItemAvatar>
@@ -101,14 +138,12 @@ const GlattItem = (props) => {
               variant="body2"
               className={classes.inline}
               color="textPrimary"
-            >
-            </Typography>
-            {"      " +
-              props.information.data }
+            ></Typography>
+            {"      " + props.information.data}
           </React.Fragment>
         }
       />
-    </ListItem>
+    </React.Fragment>
   );
 };
 

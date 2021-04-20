@@ -49,8 +49,9 @@ def weather():
         return json.dumps([{"type": "weather", "lat": lat, "lng": lng, "data": weather['data'], "location": placeName}])
     else:
         return str(req.status_code) + "reason from met api: " + req.reason
-        
-@weatherBlueprint.route('/weather/glatt/', methods = ['POST'])
+
+
+@weatherBlueprint.route('/weather/glatt/', methods=['POST'])
 def isGlatt():
     # criteria: presently about 0 degrees, precipitation; preferably also history and forecast
 
@@ -60,24 +61,25 @@ def isGlatt():
     counter = 0
     for coords in data:
         if counter % 50 == 0:
-            #Check weather
+            # Check weather
             req = requests.get(
-            f'https://api.met.no/weatherapi/locationforecast/2.0/compact?lat={coords["lat"]}&lon={coords["lng"]}', headers=headers)
+                f'https://api.met.no/weatherapi/locationforecast/2.0/compact?lat={coords["lat"]}&lon={coords["lng"]}', headers=headers)
             if req.status_code == 200:
                 weather_data = req.json()['properties']['timeseries']
                 nextHour = getNextHour(datetime.now())
                 temperature_now = [x['data']['instant']['details']['air_temperature']
-                                for x in weather_data if x['time'] == nextHour][0]
+                                   for x in weather_data if x['time'] == nextHour][0]
 
                 if abs(temperature_now) < 5:
-                    location = get_placename_from_coordinates(coords["lat"], coords["lng"])
+                    location = get_placename_from_coordinates(
+                        coords["lat"], coords["lng"])
                     info = {"type": "glatt", "lat": coords["lat"], "lng": coords["lng"],
                             "data": "Potensielt glatt", "location": location}
                     glattList.append(info)
 
                 #     print(f'isGlatt at ({coords["lat"]}, {coords["lng"]}), temp.: {temperature_now}')
                 # print(f'not isGlatt at ({coords["lat"]}, {coords["lng"]}), temp.: {temperature_now}')
-            
+
         counter += 1
     return json.dumps(glattList)
 

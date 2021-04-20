@@ -12,3 +12,8 @@ export const setSingleMarker = (coordinates) => ({
   type: "SET_SINGLE_MARKER",
   payload: coordinates,
 });
+
+export const setTemporaryMarker = (coordinates) => ({
+  type: "SET_TEMPORARY_MARKER",
+  payload: coordinates,
+});

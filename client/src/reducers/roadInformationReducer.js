@@ -1,4 +1,4 @@
-const initialState = { roadInformation: [], loading: [], error: null };
+const initialState = { roadInformationList: [], loading: [], error: null };
 
 export default function roadInformationReducer(state = initialState, action) {
   switch (action.type) {
@@ -10,7 +10,7 @@ export default function roadInformationReducer(state = initialState, action) {
     case "ADD_ROAD_INFORMATION_SUCCESS":
       return {
         ...state,
-        roadInformation: [...state.roadInformation, ...action.payload],
+        roadInformationList: [...state.roadInformationList, ...action.payload],
         loading: state.loading.slice(0, -1),
       };
     case "ADD_ROAD_INFORMATION_ERROR":

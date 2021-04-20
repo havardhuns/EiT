@@ -2,6 +2,7 @@ const initialState = {
   origin: null,
   destination: null,
   singleMarker: null,
+  temporaryMarker: null,
 };
 
 export default function placeReducer(state = initialState, action) {
@@ -20,6 +21,11 @@ export default function placeReducer(state = initialState, action) {
       return {
         ...state,
         singleMarker: action.payload,
+      };
+    case "SET_TEMPORARY_MARKER":
+      return {
+        ...state,
+        temporaryMarker: action.payload,
       };
     default:
       return state;
