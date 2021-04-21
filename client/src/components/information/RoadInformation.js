@@ -237,7 +237,7 @@ const RoadInformation = () => {
             style={{
               position: "absolute",
               top: "calc(50% + 5px)",
-              right: "5px",
+              right: "25px",
               zIndex: 1,
             }}
           >
