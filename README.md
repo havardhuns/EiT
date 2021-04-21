@@ -1,7 +1,11 @@
 # Eksperter i team
+
 ## IT-styring av moderne lastebiler - Gruppe 2
 
+Live demo: https://eit-roadbuddy.herokuapp.com/
+
 ### Kjøre backend
+
 <ol>
 <li>Gå inn i server-mappen</li>
 <pre><code>$ cd server</code></pre>
@@ -17,14 +21,13 @@
 <li>Installer dependencies</li>
 <pre><code>$ pip install -r requirements.txt</code></pre>
 <li>Kjør applikasjonen</li>
-<pre><code>$ export FLASK_APP=app.py
-$ export FLASK_ENV=development
-$ flask run
+<pre><code>$ flask run
 </code>Windows: <code> SET </code> instead of <code> export </code>
 </pre>
 </ol>
 
 ### Kjøre frontend
+
 <ol>
 <li> Installer npm
 <li>Gå inn i client-mappen</li>
