@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 
 const NavBar = (props) => {
-  const navBarItems = ["About", "Contact"];
+  const navBarItems = ["Informasjon", "Kontakt"];
 
   let history = useHistory();
 
   const redirect = (path) => {
-    history.push(path);
+    history.push(path.toLowerCase());
     history.go(0);
   };
 

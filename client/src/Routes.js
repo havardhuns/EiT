@@ -9,8 +9,8 @@ const Routes = () => {
     <React.Fragment>
       <Switch>
         <Route path="/" exact component={Home} />
-        <Route path="/about" exact component={About} />
-        <Route path="/contact" exact component={Contact} />
+        <Route path="/informasjon" exact component={About} />
+        <Route path="/kontakt" exact component={Contact} />
       </Switch>
     </React.Fragment>
   );

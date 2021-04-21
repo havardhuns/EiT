@@ -159,13 +159,16 @@ const RoadInformation = () => {
               className={classes.root}
               subheader={
                 <ListSubheader component="div" id="nested-list-subheader">
-                  Informasjon om kjøreforhold for ruten (via{" "}
-                  {directions.routes[index].summary +
-                    ", " +
-                    directions.routes[index].legs[0].distance.text +
-                    ", " +
-                    directions.routes[index].legs[0].duration.text}
-                  )
+                  Informasjon om kjøreforhold for ruten{" "}
+                  <b>
+                    (via{" "}
+                    {directions.routes[index].summary +
+                      ", " +
+                      directions.routes[index].legs[0].distance.text +
+                      ", " +
+                      directions.routes[index].legs[0].duration.text}
+                    )
+                  </b>
                 </ListSubheader>
               }
             >

@@ -1,7 +1,11 @@
+import Typography from "@material-ui/core/Typography";
+import "fontsource-roboto";
+
 const Contact = () => {
   return (
-    <div style={{ margin: "0 20%" }}>
-      <h1>Kontaktinformasjon</h1>
+    <div style={{ margin: "5% 20%" }}>
+      <Typography variant="h3">Kontaktinformasjon</Typography>
+      <br />
 
       <a href="mailto:havard.hunshamar@ntnu.no">havard.hunshamar@ntnu.no</a>
       <br />
