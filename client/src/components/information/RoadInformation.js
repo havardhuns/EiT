@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from "react-redux";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import List from "@material-ui/core/List";
 import ListItem from "@material-ui/core/ListItem";
 import Divider from "@material-ui/core/Divider";
@@ -7,7 +7,6 @@ import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
-import { setSingleMarker } from "../../actions/placeActions";
 import Button from "@material-ui/core/Button";
 import DriveEtaIcon from "@material-ui/icons/DriveEta";
 import {
@@ -15,7 +14,6 @@ import {
   getRoutePath,
 } from "../../actions/directionsAction";
 import ListSubheader from "@material-ui/core/ListSubheader";
-import GifLoader from "react-gif-loader";
 import load from "../../images/loading/delivery-truck.gif";
 import {
   getWeatherFromCoordinates,
@@ -24,7 +22,6 @@ import {
   clearRoadInformation,
 } from "../../actions/roadInformationAction";
 import RoadInformationItem from "./RoadInformationItem";
-import { setTemporaryMarker } from "../../actions/placeActions";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -40,8 +37,8 @@ function calcCrow(lat1, lon1, lat2, lon2) {
   var R = 6371; // km
   var dLat = toRad(lat2 - lat1);
   var dLon = toRad(lon2 - lon1);
-  var lat1 = toRad(lat1);
-  var lat2 = toRad(lat2);
+  lat1 = toRad(lat1);
+  lat2 = toRad(lat2);
 
   var a =
     Math.sin(dLat / 2) * Math.sin(dLat / 2) +

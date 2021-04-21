@@ -2,14 +2,9 @@ import { useSelector } from "react-redux";
 import Directions from "../directions/Directions";
 import DirectionsSelector from "../directions/DirectionsSelector";
 import RoadInformation from "../information/RoadInformation";
-import { createMuiTheme } from "@material-ui/core/styles";
-import blue from "@material-ui/core/colors/blue";
-import CssBaseline from "@material-ui/core/CssBaseline";
-
 const Home = () => {
   const origin = useSelector((state) => state.placeReducer.origin);
   const destination = useSelector((state) => state.placeReducer.destination);
-  const routePath = useSelector((state) => state.directionsReducer.routePath);
 
   const directionsSelected = origin && destination;
 

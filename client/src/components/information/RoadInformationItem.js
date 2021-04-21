@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import ListItem from "@material-ui/core/ListItem";
 import ListItemText from "@material-ui/core/ListItemText";
 import ListItemAvatar from "@material-ui/core/ListItemAvatar";
@@ -11,7 +11,7 @@ import ListItemSecondaryAction from "@material-ui/core/ListItemSecondaryAction";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import { setTemporaryMarker } from "../../actions/placeActions";
-import { useSelector, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -62,7 +62,7 @@ const ItemContent = (props) => {
     return <WeatherItem information={props.information} />;
   } else if (props.information.type === "traffic") {
     return <TrafficItem information={props.information} />;
-  } else if (props.information.type == "glatt") {
+  } else if (props.information.type === "glatt") {
     return <GlattItem information={props.information} />;
   } else {
     return <div>wtf</div>;

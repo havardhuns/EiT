@@ -1,11 +1,10 @@
 import React, { useState } from "react";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 const NavBar = (props) => {
   const navBarItems = ["About", "Contact"];
 
   let history = useHistory();
-  const location = useLocation();
 
   const redirect = (path) => {
     if (history.location.pathname === path) {

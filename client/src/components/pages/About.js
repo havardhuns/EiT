@@ -1,5 +1,3 @@
-import { RiHtml5Fill } from "react-icons/ri";
-
 const About = () => {
   return (
     <div style={{ margin: "0 20%" }}>
