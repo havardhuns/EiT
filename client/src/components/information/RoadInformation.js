@@ -155,14 +155,20 @@ const RoadInformation = () => {
           </Typography>
         </div>
       ) : (
-        <div style={{ height: "100%" }}>
+        <div style={{ height: "98%" }}>
           {!showAlternativeRoutes ? (
             <List
               style={{ maxHeight: "100%", overflow: "auto" }}
               className={classes.root}
               subheader={
                 <ListSubheader component="div" id="nested-list-subheader">
-                  Informasjon om kjøreforhold for ruten
+                  Informasjon om kjøreforhold for ruten (via{" "}
+                  {directions.routes[index].summary +
+                    ", " +
+                    directions.routes[index].legs[0].distance.text +
+                    ", " +
+                    directions.routes[index].legs[0].duration.text}
+                  )
                 </ListSubheader>
               }
             >
