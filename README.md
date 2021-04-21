@@ -2,6 +2,8 @@
 
 ## IT-styring av moderne lastebiler - Gruppe 2
 
+Live demo: https://eit-roadbuddy.herokuapp.com/
+
 ### Kjøre backend
 
 <ol>
