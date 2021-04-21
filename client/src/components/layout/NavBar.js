@@ -7,11 +7,8 @@ const NavBar = (props) => {
   let history = useHistory();
 
   const redirect = (path) => {
-    if (history.location.pathname === path) {
-      history.go(0);
-    } else {
-      history.push(path);
-    }
+    history.push(path);
+    history.go(0);
   };
 
   return (
